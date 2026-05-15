@@ -1,6 +1,7 @@
 package org.example.javabackend1.Customer;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class CustomerEntity {
 
     private String lastName;
 
+    @Email
     private String email;
 
     private long phone;

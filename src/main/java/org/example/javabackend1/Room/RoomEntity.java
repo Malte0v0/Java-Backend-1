@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "rooms")
-
-
 public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
 
-   private RoomType roomType;
-   private int extraBeds;
+    private RoomType roomType;
 
-
+    private int extraBeds;
 }
