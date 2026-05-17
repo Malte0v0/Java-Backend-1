@@ -15,6 +15,7 @@ public class RoomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
 
+    @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
     private int extraBeds;
