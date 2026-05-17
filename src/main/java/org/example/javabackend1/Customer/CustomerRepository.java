@@ -1,10 +1,11 @@
 package org.example.javabackend1.Customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
 
-@Repository
-@RestController
+import java.util.List;
+
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+    List<CustomerEntity> findByFirstNameAndLastName(String firstName, String lastName);
+    List<CustomerEntity> findByEmail(String email);
+    List<CustomerEntity> findByPhone(String phone);
 }

@@ -23,5 +23,5 @@ public class CustomerEntity {
     @Email
     private String email;
 
-    private long phone;
+    private String phone;
 }
