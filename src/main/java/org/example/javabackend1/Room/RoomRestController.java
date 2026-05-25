@@ -16,23 +16,23 @@ public class RoomRestController {
     }
 
     @GetMapping
-    public List<RoomDTO> getAllRooms() {
+    public List<RoomResponseDTO> getAllRooms() {
         return roomService.findAll();
     }
 
     @GetMapping("/{id}")
-    public RoomDTO getRoomById(@PathVariable Long id) {
+    public RoomResponseDTO getRoomById(@PathVariable Long id) {
         return roomService.findById(id);
     }
 
     @PostMapping
-    public RoomDTO createRoom(@RequestBody RoomCreateDTO dto) {
+    public RoomResponseDTO createRoom(@RequestBody RoomCreateDTO dto) {
         return roomService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public RoomDTO updateRoom(@PathVariable Long id,
-                              @RequestBody RoomCreateDTO dto) {
+    public RoomResponseDTO updateRoom(@PathVariable Long id,
+                                      @RequestBody RoomCreateDTO dto) {
         return roomService.update(id, dto);
     }
 

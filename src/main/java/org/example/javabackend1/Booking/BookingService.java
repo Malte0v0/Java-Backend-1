@@ -1,73 +1,74 @@
 package org.example.javabackend1.Booking;
 
-import org.example.javabackend1.Booking.BookingCreateDTO;
-import org.example.javabackend1.Booking.BookingDTO;
-import org.example.javabackend1.Booking.BookingEntity;
-import org.example.javabackend1.Booking.BookingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookingService {
-
     private final BookingRepository bookingRepository;
 
     public BookingService(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
 
-    public List<BookingDTO> findAll() {
-        return bookingRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .toList();
+    public BookingResponseDTO update(Long id, BookingCreateDTO createDTO) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(
+                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
+                );
+
+
+        BookingEntity saved = bookingRepository.save(booking);
+
+        return toResponse(saved);
     }
 
-    public BookingDTO findById(Long bookingId) {
-        BookingEntity booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public void delete(Long id) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(
+                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
+                );
 
-        return toDTO(booking);
+        bookingRepository.delete(booking);
     }
 
-    public BookingCreateDTO findCreateDtoById(Long bookingId) {
-        BookingEntity booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public BookingResponseDTO findById(Long id) {
+        BookingEntity booking = bookingRepository.findById(id)
+                .orElseThrow(
+                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
+                );
 
-        return toCreateDTO(booking);
+        return toResponse(booking);
     }
 
-    public BookingDTO create(BookingCreateDTO dto) {
-        BookingEntity booking = toEntity(dto);
-        BookingEntity savedBooking = bookingRepository.save(booking);
-        return toDTO(savedBooking);
+    public List<BookingResponseDTO> findAll() {
+        List<BookingEntity> bookings = bookingRepository.findAll();
+
+        List<BookingResponseDTO> responseBookings = new ArrayList<>();
+        for (BookingEntity booking : bookings) {
+            responseBookings.add(toResponse(booking));
+        }
+
+        return responseBookings;
     }
 
-    public BookingDTO update(Long bookingId, BookingCreateDTO dto) {
-        BookingEntity booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
-
-        BookingEntity savedBooking = bookingRepository.save(booking);
-        return toDTO(savedBooking);
-    }
-
-    public void delete(Long bookingId) {
-        bookingRepository.deleteById(bookingId);
-    }
-
-    private BookingDTO toDTO(BookingEntity booking) {
-        BookingDTO dto = new BookingDTO();
-        return dto;
-    }
-
-    private BookingCreateDTO toCreateDTO(BookingEntity booking) {
-        BookingCreateDTO dto = new BookingCreateDTO();
-        return dto;
-    }
-
-    private BookingEntity toEntity(BookingCreateDTO dto) {
+    public BookingResponseDTO create(BookingCreateDTO createDTO) {
+        // Skapa en booking
         BookingEntity booking = new BookingEntity();
-        return booking;
+
+        // Spara till databasen, få en booking med id som return value
+        BookingEntity saved = bookingRepository.save(booking);
+
+        // Returnera ett response dto
+        return toResponse(saved);
+    }
+
+    public BookingResponseDTO toResponse(BookingEntity booking) {
+        BookingResponseDTO response = new BookingResponseDTO();
+        response.setId(booking.getId());
+
+        return response;
     }
 }

@@ -1,6 +1,7 @@
 package org.example.javabackend1.Booking;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,23 +15,23 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<BookingDTO> getAllBookings() {
+    public List<BookingResponseDTO> getAllBookings() {
         return this.bookingService.findAll();
     }
 
     @GetMapping("/{id}")
-    public BookingDTO getBookingById(@PathVariable Long id) {
+    public BookingResponseDTO getBookingById(@PathVariable Long id) {
         return this.bookingService.findById(id);
     }
 
     @PostMapping
-    public BookingDTO createBooking(@RequestBody BookingCreateDTO dto) {
+    public BookingResponseDTO createBooking(@RequestBody BookingCreateDTO dto) {
         return this.bookingService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public BookingDTO updateBookingById(@PathVariable Long id,
-                                      @RequestBody BookingCreateDTO dto) {
+    public BookingResponseDTO updateBookingById(@PathVariable Long id,
+                                                @RequestBody BookingCreateDTO dto) {
         return this.bookingService.update(id, dto);
     }
 

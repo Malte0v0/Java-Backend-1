@@ -13,14 +13,14 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<RoomDTO> findAll() {
+    public List<RoomResponseDTO> findAll() {
         return roomRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .toList();
     }
 
-    public RoomDTO findById(Long roomId) {
+    public RoomResponseDTO findById(Long roomId) {
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
 
@@ -34,13 +34,13 @@ public class RoomService {
         return toCreateDTO(room);
     }
 
-    public RoomDTO create(RoomCreateDTO dto) {
+    public RoomResponseDTO create(RoomCreateDTO dto) {
         RoomEntity room = toEntity(dto);
         RoomEntity savedRoom = roomRepository.save(room);
         return toDTO(savedRoom);
     }
 
-    public RoomDTO update(Long roomId, RoomCreateDTO dto) {
+    public RoomResponseDTO update(Long roomId, RoomCreateDTO dto) {
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
 
@@ -55,8 +55,8 @@ public class RoomService {
         roomRepository.deleteById(roomId);
     }
 
-    private RoomDTO toDTO(RoomEntity room) {
-        RoomDTO dto = new RoomDTO();
+    private RoomResponseDTO toDTO(RoomEntity room) {
+        RoomResponseDTO dto = new RoomResponseDTO();
         dto.setRoomId(room.getRoomId());
         dto.setRoomType(room.getRoomType());
         dto.setExtraBeds(room.getExtraBeds());

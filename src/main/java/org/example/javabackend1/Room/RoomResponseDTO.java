@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RoomDTO {
+public class RoomResponseDTO {
     @NotNull
     private Long roomId;
 

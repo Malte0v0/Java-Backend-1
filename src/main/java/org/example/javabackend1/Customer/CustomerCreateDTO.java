@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CustomerCreateDTO {
-
     private String firstName;
     private String lastName;
     @Email
