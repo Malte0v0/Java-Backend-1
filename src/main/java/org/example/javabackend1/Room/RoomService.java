@@ -22,14 +22,14 @@ public class RoomService {
 
     public RoomDTO findById(Long roomId) {
         RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new RuntimeException("Hitta inte rummet"));
 
         return toDTO(room);
     }
 
     public RoomCreateDTO findCreateDtoById(Long roomId) {
         RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new RuntimeException("Hitta inte rummet"));
 
         return toCreateDTO(room);
     }
@@ -42,7 +42,7 @@ public class RoomService {
 
     public RoomDTO update(Long roomId, RoomCreateDTO dto) {
         RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new RuntimeException("hitta inte rummet"));
 
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
