@@ -1,10 +1,10 @@
 package org.example.javabackend1.Customer;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/customers")
 public class CustomerController {
     private final CustomerService customerService;
@@ -14,29 +14,61 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<CustomerResponseDTO> getAllCustomers() {
-        return customerService.findAll();
+    public String mainMenu() {
+        return "customer";
     }
 
-    @GetMapping("/{id}")
-    public CustomerResponseDTO getCustomerById(@PathVariable Long id) {
-        return customerService.findById(id);
+    @GetMapping("/list")
+    public String getAllCustomers(Model model) {
+        model.addAttribute("customers", this.customerService.findAll());
+        return "customer-list";
     }
 
-    @PostMapping
-    public CustomerResponseDTO createCustomer(@RequestBody CustomerCreateDTO dto) {
-        return customerService.create(dto);
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("customerForm", new CustomerCreateDTO());
+        return "customer-new";
     }
 
-    @PutMapping("/{id}")
-    public CustomerResponseDTO updateCustomer(@PathVariable Long id,
-                                              @RequestBody CustomerCreateDTO dto) {
-        return customerService.update(id, dto);
+    @PostMapping("/new")
+    public String createCustomer(@ModelAttribute CustomerCreateDTO dto) {
+        this.customerService.create(dto);
+        return "redirect:/customers/list";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable Long id) {
-        customerService.delete(id);
+    @GetMapping("/edit")
+    public String showEditSearch() {
+        return "customer-edit";
+    }
+
+    @GetMapping("/edit/find")
+    public String findCustomerToEdit(@RequestParam Long id, Model model) {
+        model.addAttribute("customer", this.customerService.findById(id));
+        return "customer-edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateCustomerById(@PathVariable Long id,
+                                    @ModelAttribute CustomerCreateDTO dto) {
+        customerService.update(id, dto);
+        return "redirect:/customers/list";
+    }
+
+    @GetMapping("/delete")
+    public String showDeleteSearch() {
+        return "customer-delete";
+    }
+
+    @GetMapping("/delete/find")
+    public String findCustomerToDelete(@RequestParam Long id, Model model) {
+        model.addAttribute("customer", this.customerService.findById(id));
+        return "customer-delete";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteCustomerById(@PathVariable Long id) {
+        this.customerService.delete(id);
+        return "redirect:/customers/list";
     }
 }
 

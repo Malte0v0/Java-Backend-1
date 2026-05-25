@@ -1,5 +1,6 @@
 package org.example.javabackend1.Customer;
 
+import org.example.javabackend1.Exceptions.CustomerException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

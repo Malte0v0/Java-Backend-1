@@ -1,7 +1,9 @@
 package org.example.javabackend1.Booking;
 
+import org.example.javabackend1.Exceptions.BookingException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class BookingService {
     }
 
     private BookingResponseDTO createBookingResponseDTO(BookingCreateDTO createDTO, BookingEntity booking) {
-        booking.setCheckInDate(createDTO.getCheckInDate());
-        booking.setCheckOutDate(createDTO.getCheckOutDate());
+        booking.setCheckInDate(LocalDate.parse(createDTO.getCheckInDate()).atStartOfDay());
+        booking.setCheckOutDate(LocalDate.parse(createDTO.getCheckOutDate()).atStartOfDay());
         booking.setCustomer(createDTO.getCustomer());
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(createDTO.getRoom());

@@ -1,42 +1,73 @@
 package org.example.javabackend1.Booking;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/bookings")
 public class BookingController {
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
     @GetMapping
-    public List<BookingResponseDTO> getAllBookings() {
-        return this.bookingService.findAll();
+    public String mainMenu() {
+        return "booking";
     }
 
-    @GetMapping("/{id}")
-    public BookingResponseDTO getBookingById(@PathVariable Long id) {
-        return this.bookingService.findById(id);
+    @GetMapping("/list")
+    public String getAllBookings(Model model) {
+        model.addAttribute("bookings", this.bookingService.findAll());
+        return "booking-list";
     }
 
-    @PostMapping
-    public BookingResponseDTO createBooking(@RequestBody BookingCreateDTO dto) {
-        return this.bookingService.create(dto);
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("bookingForm", new BookingCreateDTO());
+        return "booking-new";
     }
 
-    @PutMapping("/{id}")
-    public BookingResponseDTO updateBookingById(@PathVariable Long id,
-                                                @RequestBody BookingCreateDTO dto) {
-        return this.bookingService.update(id, dto);
+    @PostMapping("/new")
+    public String createBooking(@ModelAttribute BookingCreateDTO dto) {
+        this.bookingService.create(dto);
+        return "redirect:/bookings/list";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteBookingById(@PathVariable Long id) {
+    @GetMapping("/edit")
+    public String showEditSearch() {
+        return "booking-edit";
+    }
+
+    @GetMapping("/edit/find")
+    public String findBookingToEdit(@RequestParam Long id, Model model) {
+        model.addAttribute("booking", this.bookingService.findById(id));
+        return "booking-edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateBookingById(@PathVariable Long id,
+                                    @ModelAttribute BookingCreateDTO dto) {
+        bookingService.update(id, dto);
+        return "redirect:/bookings/list";
+    }
+
+    @GetMapping("/delete")
+    public String showDeleteSearch() {
+        return "booking-delete";
+    }
+
+    @GetMapping("/delete/find")
+    public String findBookingToDelete(@RequestParam Long id, Model model) {
+        model.addAttribute("booking", this.bookingService.findById(id));
+        return "booking-delete";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteBookingById(@PathVariable Long id) {
         this.bookingService.delete(id);
+        return "redirect:/bookings/list";
     }
 }

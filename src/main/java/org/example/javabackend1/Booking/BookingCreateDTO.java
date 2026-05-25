@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.example.javabackend1.Customer.CustomerEntity;
 import org.example.javabackend1.Room.RoomEntity;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -20,10 +18,10 @@ public class BookingCreateDTO {
     private RoomEntity room;
 
     @NotNull
-    private LocalDateTime checkInDate;
+    private String checkInDate;
 
     @NotNull
-    private LocalDateTime checkOutDate;
+    private String checkOutDate;
 
     @NotNull
     private int numberOfGuests;
