@@ -1,8 +1,11 @@
 package org.example.javabackend1.Customer;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
@@ -16,14 +19,7 @@ public class CustomerService {
                         () -> new CustomerException("User with id " + String.valueOf(id) + " does not exist")
                 );
 
-        customer.setEmail(createDTO.getEmail());
-        customer.setFirstName(createDTO.getFirstName());
-        customer.setLastName(createDTO.getLastName());
-        customer.setPhone(createDTO.getPhone());
-
-        CustomerEntity saved = customerRepository.save(customer);
-
-        return toResponse(saved);
+        return createCustomerResponseDTO(createDTO, customer);
     }
 
     public void delete(Long id) {
@@ -60,8 +56,13 @@ public class CustomerService {
             throw new CustomerException("Email already in use");
         }
 
-        // Skapa en customer
         CustomerEntity customer = new CustomerEntity();
+
+        return createCustomerResponseDTO(createDTO, customer);
+    }
+
+    private CustomerResponseDTO createCustomerResponseDTO(CustomerCreateDTO createDTO, CustomerEntity customer) {
+        // Skapa en customer
         customer.setEmail(createDTO.getEmail());
         customer.setFirstName(createDTO.getFirstName());
         customer.setLastName(createDTO.getLastName());

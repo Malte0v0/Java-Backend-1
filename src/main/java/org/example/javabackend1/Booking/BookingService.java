@@ -19,6 +19,16 @@ public class BookingService {
                         () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
                 );
 
+        return createBookingResponseDTO(createDTO, booking);
+    }
+
+    private BookingResponseDTO createBookingResponseDTO(BookingCreateDTO createDTO, BookingEntity booking) {
+        booking.setCheckInDate(createDTO.getCheckInDate());
+        booking.setCheckOutDate(createDTO.getCheckOutDate());
+        booking.setCustomer(createDTO.getCustomer());
+        booking.setNumberOfGuests(createDTO.getNumberOfGuests());
+        booking.setRoom(createDTO.getRoom());
+        booking.setStatus(createDTO.getStatus());
 
         BookingEntity saved = bookingRepository.save(booking);
 
@@ -58,11 +68,7 @@ public class BookingService {
         // Skapa en booking
         BookingEntity booking = new BookingEntity();
 
-        // Spara till databasen, få en booking med id som return value
-        BookingEntity saved = bookingRepository.save(booking);
-
-        // Returnera ett response dto
-        return toResponse(saved);
+        return createBookingResponseDTO(createDTO, booking);
     }
 
     public BookingResponseDTO toResponse(BookingEntity booking) {
