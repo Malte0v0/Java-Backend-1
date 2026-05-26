@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Hotel Booking</title>
+    <title>Customer menu</title>
 </head>
 <body>
-<h1> dwadawd </h1>
+
+<h1>Customer menu</h1>
+
+<div>
+
+    <a th:href="@{/customers/list}">
+        Show all customers
+    </a>
+
+</div>
+
+<br>
+
+<div>
+
+    <a th:href="@{/customers/new}">
+        Create customer
+    </a>
+
+</div>
+
 </body>
 </html>

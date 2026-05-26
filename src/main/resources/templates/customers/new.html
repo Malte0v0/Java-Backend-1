@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create customer</title>
+</head>
+
+<body>
+
+<h1>Create customer</h1>
+
+<form th:action="@{/customers/new}"
+      th:object="${customer}"
+      method="post">
+
+    <div>
+
+        <label>First name</label>
+
+        <input type="text"
+               th:field="*{firstName}">
+
+    </div>
+
+    <div>
+
+        <label>Last name</label>
+
+        <input type="text"
+               th:field="*{lastName}">
+
+    </div>
+
+    <div>
+
+        <label>Email</label>
+
+        <input type="email"
+               th:field="*{email}">
+
+    </div>
+
+    <div>
+
+        <label>Phone</label>
+
+        <input type="text"
+               th:field="*{phone}">
+
+    </div>
+
+    <button type="submit">
+        Save
+    </button>
+
+    <a th:href="@{/customers}">
+        Cancel
+    </a>
+
+</form>
+
+</body>
+</html>
