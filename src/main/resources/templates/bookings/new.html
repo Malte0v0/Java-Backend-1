@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create booking</title>
+</head>
+<body>
+    <h1>Create booking</h1>
+    <form th:action="@{/bookings/new}" th:object="${booking}" method="post">
+        <div>
+            <label>Customer</label>
+            <select th:field="*{customerId}">
+                <option value="">Select customer</option>
+                <option th:each="c : ${customers}"
+                        th:value="${c.id}"
+                        th:text="${c.email}">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label>Room</label>
+            <select th:field="*{roomId}">
+                <option value="">Select room</option>
+                <option th:each="r : ${rooms}"
+                        th:value="${r.roomId}"
+                        th:text="'Room ' + ${r.roomId} + ' - ' + ${r.roomType} + ' (extra beds: ' + ${r.extraBeds} + ')'">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label>Check in</label>
+            <input type="date" th:field="*{checkInDate}" />
+        </div>
+        <div>
+            <label>Check out</label>
+            <input type="date" th:field="*{checkOutDate}" />
+        </div>
+        <div>
+            <label>Guests</label>
+            <input type="number" th:field="*{numberOfGuests}" min="1"/>
+        </div>
+        <div>
+            <label>Status</label>
+            <select th:field="*{status}">
+                <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
+                        th:value="${s}" th:text="${s}">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit">Save</button>
+        <a th:href="@{/bookings}">Cancel</a>
+    </form>
+</body>
+</html>

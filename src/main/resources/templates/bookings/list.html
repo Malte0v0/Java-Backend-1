@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Bookings</title></head>
+    <body>
+        <div th:replace="~{fragment/navbar :: navbar}"></div>
+
+        <h1>List of Bookings</h1>
+        <a th:href="@{/bookings/new}">New Booking</a>
+
+        <h2>Bookings</h2>
+        <p th:if="${bookings.isEmpty()}">No bookings found</p>
+        <table th:unless="${bookings.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Room</th>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                    <th>Guests</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="booking : ${bookings}">
+                    <td th:text="${booking.customerFirstName} ${booking.customerLastName}"></td>
+                    <td th:text="${booking.roomId}"></td>
+                    <td th:text="${booking.checkInDate}"></td>
+                    <td th:text="${booking.checkOutDate}"></td>
+                    <td th:text="${booking.numberOfGuests}"></td>
+                    <td>
+                        <a th:href="@{/bookings/edit/find(id=${booking.id})}">Edit</a>
+                        <a th:href="@{/bookings/{id}/delete(id=${booking.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/bookings}">Back to Bookings menu</a>
+    </body>
+</html>

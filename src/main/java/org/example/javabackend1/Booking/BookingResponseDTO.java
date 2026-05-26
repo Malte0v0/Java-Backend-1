@@ -1,11 +1,10 @@
 package org.example.javabackend1.Booking;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.javabackend1.Customer.CustomerEntity;
-import org.example.javabackend1.Room.RoomEntity;
 
 import java.time.LocalDate;
 
@@ -15,22 +14,26 @@ import java.time.LocalDate;
 public class BookingResponseDTO {
     @NotNull
     private Long id;
-
+    @Email
+    private String customerEmail;
     @NotNull
-    private CustomerEntity customer;
-
+    private Long customerId;
     @NotNull
-    private RoomEntity room;
-
+    private String customerFirstName;
+    @NotNull
+    private String customerLastName;
+    @NotNull
+    private Long roomId;
+    @NotNull
+    private String roomType;
+    @NotNull
+    private int extraBeds;
     @NotNull
     private LocalDate checkInDate;
-
     @NotNull
     private LocalDate checkOutDate;
-
     @NotNull
     private int numberOfGuests;
-
     @NotNull
     private BookingStatus status;
 }

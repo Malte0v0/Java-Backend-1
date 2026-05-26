@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Bookings</title></head>
+<body>
+<div th:replace="~{fragment/navbar :: navbar}"></div>
+
+<h1>Bookings</h1>
+<ul>
+    <li><a th:href="@{/bookings/list}">Show all bookings</a></li>
+    <li><a th:href="@{/bookings/new}">Create new booking</a></li>
+<!--    <li><a th:href="@{/bookings/edit}">Edit a booking</a></li>-->
+<!--    <li><a th:href="@{/bookings/delete}">Delete a booking</a></li>-->
+</ul>
+</body>
+</html>

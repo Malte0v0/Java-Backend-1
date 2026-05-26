@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/customers")
-
-
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -20,14 +18,11 @@ public class CustomerController {
         return "customers/customer";
     }
 
-
-
     @GetMapping("/list")
     public String getAllCustomers(Model model) {
         model.addAttribute("customers", this.customerService.findAll());
         return "customers/list";
     }
-
 
     // /customers/new
     @GetMapping("/new")
@@ -38,12 +33,9 @@ public class CustomerController {
         // templates/customers/new.html
     }
 
-
-
     @PostMapping("/new")
     public String createCustomer(@ModelAttribute("customer") CustomerCreateDTO dto) {
         this.customerService.create(dto);
-
         return "redirect:/customers/list";
     }
     // Efter save:
@@ -55,7 +47,6 @@ public class CustomerController {
         return "customers/edit";
     }
 
-
     // /customers/3/edit
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
@@ -64,14 +55,11 @@ public class CustomerController {
         return "customers/edit";
     }
 
-
     @GetMapping("/edit/find")
     public String findCustomerToEdit(@RequestParam Long id, Model model) {
         model.addAttribute("customer", this.customerService.findById(id));
         return "customers/edit";
     }
-
-
 
     @PostMapping("/{id}/edit")
     public String updateCustomerById(@PathVariable Long id,
@@ -79,7 +67,6 @@ public class CustomerController {
         customerService.update(id, dto);
         return "redirect:/customers/list";
     }
-
 
     // /customers/delete
     @GetMapping("/delete")
@@ -93,8 +80,7 @@ public class CustomerController {
             @PathVariable Long id, Model model) {
         model.addAttribute("customer",
                 this.customerService.findById(id));
-// Hämtar customer som ska tas bort.
-
+        // Hämtar customer som ska tas bort.
         return "customers/delete";
     }
 
@@ -104,7 +90,6 @@ public class CustomerController {
         model.addAttribute("customer", this.customerService.findById(id));
         return "customers/delete";
     }
-
 
     // Körs när delet knappen trycks.
     @PostMapping("/{id}/delete")

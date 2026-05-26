@@ -4,18 +4,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.javabackend1.Customer.CustomerEntity;
-import org.example.javabackend1.Room.RoomEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class BookingCreateDTO {
     @NotNull
-    private CustomerEntity customer;
+    private Long customerId;
 
     @NotNull
-    private RoomEntity room;
+    private Long roomId;
 
     @NotNull
     private String checkInDate;

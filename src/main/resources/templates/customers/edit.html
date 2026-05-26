@@ -4,39 +4,28 @@
     <meta charset="UTF-8">
     <title>Edit customer</title>
 </head>
-<body>
-
-<h1>Edit customer</h1>
-
-<form th:action="@{/customers/{id}/edit(id=${customer.id})}"
-      th:object="${customer}"
-      method="post">
-
-    <div>
-        <label>First name</label>
-        <input type="text" th:field="*{firstName}">
-    </div>
-
-    <div>
-        <label>Last name</label>
-        <input type="text" th:field="*{lastName}">
-    </div>
-
-    <div>
-        <label>Email</label>
-        <input type="email" th:field="*{email}">
-    </div>
-
-    <div>
-        <label>Phone</label>
-        <input type="text" th:field="*{phone}">
-    </div>
-
-    <button type="submit">Save</button>
-
-    <a th:href="@{/customers/list}">Cancel</a>
-
-</form>
-
-</body>
+    <body>
+        <div th:replace="~{fragment/navbar :: navbar}"></div>
+        <h1>Edit customer</h1>
+        <form th:action="@{/customers/{id}/edit(id=${customer.id})}" th:object="${customer}" method="post">
+            <div>
+                <label>First name</label>
+                <input type="text" th:field="*{firstName}">
+            </div>
+            <div>
+                <label>Last name</label>
+                <input type="text" th:field="*{lastName}">
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" th:field="*{email}">
+            </div>
+            <div>
+                <label>Phone</label>
+                <input type="text" th:field="*{phone}">
+            </div>
+            <button type="submit">Save</button>
+            <a th:href="@{/customers/list}">Cancel</a>
+        </form>
+    </body>
 </html>

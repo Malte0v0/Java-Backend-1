@@ -1,5 +1,7 @@
 package org.example.javabackend1.Booking;
 
+import org.example.javabackend1.Customer.CustomerService;
+import org.example.javabackend1.Room.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,9 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bookings")
 public class BookingController {
     private final BookingService bookingService;
+    private final CustomerService customerService;
+    private final RoomService roomService;
 
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService,
+                             CustomerService customerService,
+                             RoomService roomService) {
         this.bookingService = bookingService;
+        this.customerService = customerService;
+        this.roomService = roomService;
     }
 
     @GetMapping
@@ -26,12 +34,16 @@ public class BookingController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("bookingForm", new BookingCreateDTO());
+        model.addAttribute("booking", new BookingCreateDTO());
+        model.addAttribute("customers", customerService.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "bookings/new";
     }
 
     @PostMapping("/new")
-    public String createBooking(@ModelAttribute BookingCreateDTO dto) {
+    public String createBooking(@ModelAttribute("booking") BookingCreateDTO dto) {
+        System.out.println("customerId: " + dto.getCustomerId());
+        System.out.println("roomId: " + dto.getRoomId());
         this.bookingService.create(dto);
         return "redirect:/bookings/list";
     }

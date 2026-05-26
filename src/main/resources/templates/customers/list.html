@@ -4,53 +4,40 @@
     <meta charset="UTF-8">
     <title>customers</title>
 </head>
-<body>
+    <body>
+        <div th:replace="~{fragment/navbar :: navbar}"></div>
+        <h1>Customers</h1>
+        <a th:href="@{/customers/new}"> Add customer</a>
+        <p th:if="${customers.isEmpty()}">No customer Found.</p>
 
-<h1>customers</h1>
-<a th:href="@{/customers/new}"> add customer</a>
+        <table th:if="${!customers.isEmpty()}">
+            <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            </thead>
+        <tbody>
+            <tr th:each="customer : ${customers}">
+                <td th:text = "${customer.firstName}">First name</td>
+                <td th:text="${customer.lastName}">Last name</td>
+                <td th:text="${customer.email}">Email</td>
+                <td th:text="${customer.phone}">Phone</td>
+                <td>
+                    <!--
+                        Blir
+                        /customers/3/edit
+                    -->
+                    <a th:href="@{/customers/{id}/edit(id=${customer.id})}">Edit</a>
 
-<p th:if="${customers.isEmpty()}">no customer found.</p>
-
-
-<table th:if="${!customers.isEmpty()}">
-    <thead>
-    <tr>
-        <th>first name</th>
-        <th>last name</th>
-        <th>Email</th>
-        <th>phone</th>
-
-
-    </tr>
-    </thead>
-
-<tbody>
-<tr th:each="customer : ${customers}">
-    <td th:text = "${customer.firstName}">first namn</td>
-    <td th:text="${customer.lastName}">last namn</td>
-    <td th:text="${customer.email}">Email</td>
-    <td th:text="${customer.phone}">Phone</td>
-
-
-    <td>
-        <!--
-                Blir
-                /customers/3/edit
-           -->
-        <a th:href="@{/customers/{id}/edit(id=${customer.id})}">Edit</a>
-
-        <a th:href="@{/customers/{id}/delete(id=${customer.id})}">Delete</a>
-
-
-
-    </td>
-</tr>
-
-</tbody>
-</table>
-<br>
-<a th:href="@{/customers}">Back to customer menu</a>
-
-
-</body>
+                    <a th:href="@{/customers/{id}/delete(id=${customer.id})}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+        <br>
+        <a th:href="@{/customers}">Back to customer menu</a>
+    </body>
 </html>

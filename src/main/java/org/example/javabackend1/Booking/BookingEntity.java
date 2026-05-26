@@ -15,11 +15,9 @@ import java.time.LocalDate;
 @Entity
 @Table (name = "booking")
 public class BookingEntity {
-
     @Id
     @GeneratedValue
     private Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -28,7 +26,6 @@ public class BookingEntity {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private RoomEntity room;
-
 
     private LocalDate checkInDate;
     private LocalDate checkOutDate;

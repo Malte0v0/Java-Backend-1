@@ -3,25 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>delete customer</title>
+    <title>Delete Customer</title>
 </head>
-<body>
-<h1>delete customer</h1>
-<p>  are u sure u wanan delete this customer</p>
-<p>
-    <strong th:text="${customer.firstName}">firstname</strong>
-    <strong th:text="${customer.lastName}">last name</strong>
-</p>
-
-
-<form th:action="@{/customers/{id}/delete(id=${customer.id})}"
-      method="post"
-      style="">
-    <button type="submit">ja,  delete</button>
-    <a th:href="@{/customers}">cancel</a>
-</form>
-
-
-</p>
-</body>
+    <body>
+        <div th:replace="~{fragment/navbar :: navbar}"></div>
+        <h1>Delete customer</h1>
+        <p>Are you sure you want to delete this customer?</p>
+        <p>
+            <strong th:text="${customer.firstName}">First name</strong>
+            <strong th:text="${customer.lastName}">Last name</strong>
+        </p>
+        <form th:action="@{/customers/{id}/delete(id=${customer.id})}" method="post" style="">
+            <button type="submit">Delete</button>
+            <a th:href="@{/customers}">Cancel</a>
+        </form>
+    </body>
 </html>
