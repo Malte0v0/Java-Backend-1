@@ -9,45 +9,57 @@
     <form th:action="@{/bookings/new}" th:object="${booking}" method="post">
         <div>
             <label>Customer</label>
-            <select th:field="*{customerId}">
-                <option value="">Select customer</option>
-                <option th:each="c : ${customers}"
-                        th:value="${c.id}"
-                        th:text="${c.email}">
-                </option>
-            </select>
+            <label>
+                <select th:field="*{customerId}">
+                    <option value="">Select customer</option>
+                    <option th:each="c : ${customers}"
+                            th:value="${c.id}"
+                            th:text="${c.email}">
+                    </option>
+                </select>
+            </label>
         </div>
 
         <div>
             <label>Room</label>
-            <select th:field="*{roomId}">
-                <option value="">Select room</option>
-                <option th:each="r : ${rooms}"
-                        th:value="${r.roomId}"
-                        th:text="'Room ' + ${r.roomId} + ' - ' + ${r.roomType} + ' (extra beds: ' + ${r.extraBeds} + ')'">
-                </option>
-            </select>
+            <label>
+                <select th:field="*{roomId}">
+                    <option value="">Select room</option>
+                    <option th:each="r : ${rooms}"
+                            th:value="${r.roomId}"
+                            th:text="'Room ' + ${r.roomId} + ' - ' + ${r.roomType} + ' (extra beds: ' + ${r.extraBeds} + ')'">
+                    </option>
+                </select>
+            </label>
         </div>
 
         <div>
             <label>Check in</label>
-            <input type="date" th:field="*{checkInDate}" />
+            <label>
+                <input type="date" th:field="*{checkInDate}" />
+            </label>
         </div>
         <div>
             <label>Check out</label>
-            <input type="date" th:field="*{checkOutDate}" />
+            <label>
+                <input type="date" th:field="*{checkOutDate}" />
+            </label>
         </div>
         <div>
             <label>Guests</label>
-            <input type="number" th:field="*{numberOfGuests}" min="1"/>
+            <label>
+                <input type="number" th:field="*{numberOfGuests}" min="1"/>
+            </label>
         </div>
         <div>
             <label>Status</label>
-            <select th:field="*{status}">
-                <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
-                        th:value="${s}" th:text="${s}">
-                </option>
-            </select>
+            <label>
+                <select th:field="*{status}">
+                    <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
+                            th:value="${s}" th:text="${s}">
+                    </option>
+                </select>
+            </label>
         </div>
 
         <button type="submit">Save</button>

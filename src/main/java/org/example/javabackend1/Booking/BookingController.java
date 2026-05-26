@@ -42,8 +42,6 @@ public class BookingController {
 
     @PostMapping("/new")
     public String createBooking(@ModelAttribute("booking") BookingCreateDTO dto) {
-        System.out.println("customerId: " + dto.getCustomerId());
-        System.out.println("roomId: " + dto.getRoomId());
         this.bookingService.create(dto);
         return "redirect:/bookings/list";
     }
@@ -55,6 +53,14 @@ public class BookingController {
 
     @GetMapping("/edit/find")
     public String findBookingToEdit(@RequestParam Long id, Model model) {
+        model.addAttribute("booking", this.bookingService.findById(id));
+        model.addAttribute("customers", customerService.findAll());
+        model.addAttribute("rooms", roomService.findAll());
+        return "bookings/edit";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditPage(@PathVariable Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
         return "bookings/edit";
     }

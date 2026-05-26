@@ -47,17 +47,17 @@ public class CustomerController {
         return "customers/edit";
     }
 
+    @GetMapping("/edit/find")
+    public String findCustomerToEdit(@RequestParam Long id, Model model) {
+        model.addAttribute("customer", this.customerService.findById(id));
+        return "customers/edit";
+    }
+
     // /customers/3/edit
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customerService.findById(id));
         // templates/customers/edit.html
-        return "customers/edit";
-    }
-
-    @GetMapping("/edit/find")
-    public String findCustomerToEdit(@RequestParam Long id, Model model) {
-        model.addAttribute("customer", this.customerService.findById(id));
         return "customers/edit";
     }
 

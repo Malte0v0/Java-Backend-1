@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit booking</title>
+</head>
+<body>
+    <div th:replace="~{fragment/navbar :: navbar}"></div>
+    <h1>Edit booking</h1>
+
+    <div th:if="${booking == null}">
+        <form th:action="@{/bookings/edit/find}" method="get">
+            <label>Booking ID</label>
+            <input type="number" name="id" required />
+            <button type="submit">Find</button>
+        </form>
+    </div>
+
+    <div th:if="${booking != null}">
+        <form th:action="@{/bookings/{id}/edit(id=${booking.id})}" method="post">
+            <div>
+                <label>Customer</label>
+                <select name="customerId" required>
+                    <option value="">Select customer</option>
+                    <option th:each="c : ${customers}"
+                            th:value="${c.id}"
+                            th:text="${c.email}"
+                            th:selected="${c.id == booking.customerId}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>Room</label>
+                <select name="roomId" required>
+                    <option value="">Select room</option>
+                    <option th:each="r : ${rooms}"
+                            th:value="${r.roomId}"
+                            th:text="|Room ${r.roomId} - ${r.roomType} (extra beds: ${r.extraBeds})|"
+                            th:selected="${r.roomId == booking.roomId}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label>Check in</label>
+                <input type="date" name="checkInDate" th:value="${booking.checkInDate}" required />
+            </div>
+            <div>
+                <label>Check out</label>
+                <input type="date" name="checkOutDate" th:value="${booking.checkOutDate}" required />
+            </div>
+            <div>
+                <label>Guests</label>
+                <input type="number" name="numberOfGuests" th:value="${booking.numberOfGuests}" min="1" required />
+            </div>
+            <div>
+                <label>Status</label>
+                <select name="status">
+                    <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
+                            th:value="${s}" th:text="${s}"
+                            th:selected="${s == booking.status}">
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit">Save</button>
+            <a th:href="@{/bookings/list}">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>
