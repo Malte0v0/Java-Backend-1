@@ -15,19 +15,19 @@ public class CustomerController {
 
     @GetMapping
     public String mainMenu() {
-        return "customer";
+        return "/customers/customer";
     }
 
     @GetMapping("/list")
     public String getAllCustomers(Model model) {
         model.addAttribute("customers", this.customerService.findAll());
-        return "customer-list";
+        return "customers/list";
     }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("customerForm", new CustomerCreateDTO());
-        return "customer-new";
+        return "customers/new";
     }
 
     @PostMapping("/new")
@@ -38,13 +38,13 @@ public class CustomerController {
 
     @GetMapping("/edit")
     public String showEditSearch() {
-        return "customer-edit";
+        return "customers/edit";
     }
 
     @GetMapping("/edit/find")
     public String findCustomerToEdit(@RequestParam Long id, Model model) {
         model.addAttribute("customer", this.customerService.findById(id));
-        return "customer-edit";
+        return "customers/edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -56,13 +56,13 @@ public class CustomerController {
 
     @GetMapping("/delete")
     public String showDeleteSearch() {
-        return "customer-delete";
+        return "customers/delete";
     }
 
     @GetMapping("/delete/find")
     public String findCustomerToDelete(@RequestParam Long id, Model model) {
         model.addAttribute("customer", this.customerService.findById(id));
-        return "customer-delete";
+        return "customers/delete";
     }
 
     @PostMapping("/{id}/delete")

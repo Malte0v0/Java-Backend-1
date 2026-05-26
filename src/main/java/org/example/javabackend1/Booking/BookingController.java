@@ -15,19 +15,19 @@ public class BookingController {
 
     @GetMapping
     public String mainMenu() {
-        return "booking";
+        return "bookings/booking";
     }
 
     @GetMapping("/list")
     public String getAllBookings(Model model) {
         model.addAttribute("bookings", this.bookingService.findAll());
-        return "booking-list";
+        return "bookings/list";
     }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("bookingForm", new BookingCreateDTO());
-        return "booking-new";
+        return "bookings/new";
     }
 
     @PostMapping("/new")
@@ -38,13 +38,13 @@ public class BookingController {
 
     @GetMapping("/edit")
     public String showEditSearch() {
-        return "booking-edit";
+        return "bookings/edit";
     }
 
     @GetMapping("/edit/find")
     public String findBookingToEdit(@RequestParam Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
-        return "booking-edit";
+        return "bookings/edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -56,13 +56,13 @@ public class BookingController {
 
     @GetMapping("/delete")
     public String showDeleteSearch() {
-        return "booking-delete";
+        return "bookings/delete";
     }
 
     @GetMapping("/delete/find")
     public String findBookingToDelete(@RequestParam Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
-        return "booking-delete";
+        return "bookings/delete";
     }
 
     @PostMapping("/{id}/delete")

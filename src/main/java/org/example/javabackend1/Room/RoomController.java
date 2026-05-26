@@ -21,7 +21,7 @@ public class RoomController {
         if (checkIn != null && checkOut != null) {
             model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut));
         }
-        return "room-available";
+        return "rooms/available";
     }
 
     // READ all
@@ -35,14 +35,14 @@ public class RoomController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("room", new RoomCreateDTO());
-        return "rooms/create";
+        return "rooms/new";
     }
 
 
     @PostMapping
     public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
         roomService.create(dto);
-        return "/rooms";
+        return "redirect:/rooms";
     }
 
 
@@ -64,13 +64,13 @@ public class RoomController {
     public String updateRoom(@PathVariable Long id,
                              @ModelAttribute("room") RoomCreateDTO dto) {
         roomService.update(id, dto);
-        return "/rooms";
+        return "redirect:/rooms";
     }
 
 
     @PostMapping("/{id}/delete")
     public String deleteRoom(@PathVariable Long id) {
         roomService.delete(id);
-        return "/rooms";
+        return "redirect:/rooms";
     }
 }
