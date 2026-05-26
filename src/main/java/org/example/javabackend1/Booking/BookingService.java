@@ -25,8 +25,8 @@ public class BookingService {
     }
 
     private BookingResponseDTO createBookingResponseDTO(BookingCreateDTO createDTO, BookingEntity booking) {
-        booking.setCheckInDate(LocalDate.parse(createDTO.getCheckInDate()).atStartOfDay());
-        booking.setCheckOutDate(LocalDate.parse(createDTO.getCheckOutDate()).atStartOfDay());
+        booking.setCheckInDate(LocalDate.parse(createDTO.getCheckInDate()));
+        booking.setCheckOutDate(LocalDate.parse(createDTO.getCheckOutDate()));
         booking.setCustomer(createDTO.getCustomer());
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(createDTO.getRoom());

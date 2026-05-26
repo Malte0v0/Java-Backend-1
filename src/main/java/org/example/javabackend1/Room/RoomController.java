@@ -14,6 +14,16 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+    @GetMapping("/available")
+    public String showAvailableRooms(@RequestParam(required = false) String checkIn,
+                                     @RequestParam(required = false) String checkOut,
+                                     Model model) {
+        if (checkIn != null && checkOut != null) {
+            model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut));
+        }
+        return "room-available";
+    }
+
     // READ all
     @GetMapping
     public String listRooms(Model model) {

@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import org.example.javabackend1.Customer.CustomerEntity;
 import org.example.javabackend1.Room.RoomEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table (name = "bookning")
+@Table (name = "booking")
 public class BookingEntity {
 
     @Id
@@ -30,8 +30,8 @@ public class BookingEntity {
     private RoomEntity room;
 
 
-    private LocalDateTime checkInDate;
-    private LocalDateTime checkOutDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private int numberOfGuests;
     private BookingStatus status;
 }

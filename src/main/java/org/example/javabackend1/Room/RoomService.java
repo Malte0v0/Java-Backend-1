@@ -1,7 +1,10 @@
 package org.example.javabackend1.Room;
 
+import org.example.javabackend1.Exceptions.RoomException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -11,6 +14,23 @@ public class RoomService {
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
+    }
+
+    public List<RoomResponseDTO> findAvailableRooms(String checkInDate, String checkOutDate) {
+        LocalDate checkIn = LocalDate.parse(checkInDate);
+        LocalDate checkOut = LocalDate.parse(checkOutDate);
+
+        if (checkOut.isBefore(checkIn) || checkOut.isEqual(checkIn)) {
+            throw new RoomException("Check out must be after check in");
+        }
+
+        List<RoomResponseDTO> responseRooms = new ArrayList<>();
+
+        for (RoomEntity room : roomRepository.findAvailableRooms(checkIn, checkOut)) {
+            responseRooms.add(toDTO(room));
+        }
+
+        return responseRooms;
     }
 
     public List<RoomResponseDTO> findAll() {
