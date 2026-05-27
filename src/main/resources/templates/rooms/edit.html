@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit room</title>
+</head>
+<body>
+<h1>Edit room</h1>
+<form th:action="@{/rooms/{id}/edit(id=${room.roomId})}" th:object="${room}" method="post">
+    <div>
+        <label>room type</label><!-- inte klar -->
+        <input type="text" th:field="*{roomType}">
+    </div>
+    <div>
+        <label>extra beds</label>
+        <input type="number" th:field="*{extraBeds}">
+    </div>
+    <div>
+
+    <button type="submit">update</button>
+    <a th:href="@{/rooms/list}">Cancel</a>
+</form>
+</body>
+</html>

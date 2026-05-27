@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create room</title>
+</head>
+<body>
+<h1>Create room</h1>
+<form th:action="@{/rooms/new}" th:object="${room}" method="post">
+    <div>
+        <label>room type </label><!-- inte klar  -->
+        <input type="text" th:field="*{firstName}">
+    </div>
+    <div>
+        <label>extra beds</label>
+        <input type="number" th:field="*{extrabeds}">
+    </div>
+
+    <button type="submit">Save</button>
+
+    <a th:href="@{/rooms/list}">Cancel</a>
+</form>
+</body>
+</html>

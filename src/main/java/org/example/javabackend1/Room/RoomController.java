@@ -13,7 +13,10 @@ public class RoomController {
     public RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
-
+    @GetMapping
+    public String mainMenu() {
+        return "rooms/room";
+    }
     @GetMapping("/available")
     public String showAvailableRooms(@RequestParam(required = false) String checkIn,
                                      @RequestParam(required = false) String checkOut,
@@ -25,7 +28,7 @@ public class RoomController {
     }
 
     // READ all
-    @GetMapping
+    @GetMapping("/list")
     public String listRooms(Model model) {
         model.addAttribute("rooms", roomService.findAll());
         return "rooms/list";
@@ -39,10 +42,10 @@ public class RoomController {
     }
 
 
-    @PostMapping
+    @PostMapping("/new")
     public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
         roomService.create(dto);
-        return "redirect:/rooms";
+        return "redirect:/rooms/list";
     }
 
 
@@ -56,6 +59,7 @@ public class RoomController {
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("room", roomService.findById(id));
+        model.addAttribute("roomTypes",RoomType.values());
         return "rooms/edit";
     }
 
@@ -64,13 +68,17 @@ public class RoomController {
     public String updateRoom(@PathVariable Long id,
                              @ModelAttribute("room") RoomCreateDTO dto) {
         roomService.update(id, dto);
-        return "redirect:/rooms";
+        return "redirect:/rooms/list";
     }
-
+    @GetMapping("/{id}/delete")
+    public String showDeletePage(@PathVariable Long id, Model model) {
+        model.addAttribute("room", roomService.findById(id));
+        return "rooms/delete";
+    }
 
     @PostMapping("/{id}/delete")
     public String deleteRoom(@PathVariable Long id) {
         roomService.delete(id);
-        return "redirect:/rooms";
+        return "redirect:/rooms/list";
     }
 }
