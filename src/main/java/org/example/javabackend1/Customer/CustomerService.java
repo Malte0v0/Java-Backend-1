@@ -1,5 +1,6 @@
 package org.example.javabackend1.Customer;
 
+import jakarta.transaction.Transactional;
 import org.example.javabackend1.Exceptions.CustomerException;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class CustomerService {
         return createCustomerResponseDTO(createDTO, customer);
     }
 
+    @Transactional
     public void delete(Long id) {
         CustomerEntity customer = customerRepository.findById(id)
                 .orElseThrow(

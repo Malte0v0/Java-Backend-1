@@ -2,7 +2,6 @@ package org.example.javabackend1.Customer;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.javabackend1.Booking.BookingEntity;
@@ -10,7 +9,6 @@ import org.example.javabackend1.Booking.BookingEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity

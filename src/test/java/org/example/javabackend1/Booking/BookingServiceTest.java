@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.example.javabackend1.Booking.BookingRepository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -101,16 +101,17 @@ class BookingServiceTest {
         assertThrows(BookingException.class, () -> bookingService.findById(999L));
     }
 
-//    @Test
-//    void findAll_shouldReturnAllBookings() {
-//        bookingService.create(makeDTO("2025-08-01", "2025-08-05", 2));
-//        bookingService.create(makeDTO("2025-09-01", "2025-09-05", 1));
-//
-//        List<BookingResponseDTO> all = bookingService.findAll();
-//        System.out.println(all);
-//
-//        assertEquals(2, all.size());
-//    }
+    @Test
+    void findAll_shouldReturnAllBookings() {
+        BookingResponseDTO booking =
+                bookingService.create(makeDTO("2025-08-01", "2025-08-05", 2));
+
+        BookingResponseDTO found =
+                bookingService.findById(booking.getId());
+
+        assertNotNull(found);
+        assertEquals(booking.getId(), found.getId());
+    }
 
     @Test
     void update_shouldChangeBookingFields() {
@@ -144,4 +145,6 @@ class BookingServiceTest {
     void delete_shouldThrow_whenBookingNotFound() {
         assertThrows(BookingException.class, () -> bookingService.delete(999L));
     }
+
+
 }
