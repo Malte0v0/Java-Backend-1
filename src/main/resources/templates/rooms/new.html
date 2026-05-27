@@ -25,5 +25,23 @@
 
     <a th:href="@{/rooms/list}">Cancel</a>
 </form>
+<script>
+    const roomType = document.getElementById("roomType");
+    const extraBeds = document.getElementById("extraBeds");
+
+    function updateExtraBeds() {
+        if (roomType.value === "SINGLE") {
+            extraBeds.value = 0;
+            extraBeds.disabled = true;
+        } else {
+            extraBeds.disabled = false;
+            extraBeds.min = 0;
+            extraBeds.max = 2;
+        }
+    }
+
+    roomType.addEventListener("change", updateExtraBeds);
+    updateExtraBeds();
+</script>
 </body>
 </html>

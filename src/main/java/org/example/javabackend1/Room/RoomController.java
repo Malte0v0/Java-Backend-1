@@ -1,7 +1,9 @@
 package org.example.javabackend1.Room;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -56,10 +58,22 @@ public class RoomController {
 
     // --- POST /rooms/new ---
     @PostMapping("/new")
-    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
+    public String createRoom(@Valid @ModelAttribute("room") RoomCreateDTO dto,
+                             BindingResult bindingResult,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roomTypes", RoomType.values());
+            return "rooms/new";
+        }
+
         roomService.create(dto);
         return "redirect:/rooms/list";
     }
+//    @PostMapping("/new")
+//    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
+//        roomService.create(dto);
+//        return "redirect:/rooms/list";
+//    }
     // ↑↑↑↑↑ SKAPA EN NY BOOKING ↑↑↑↑↑
 
     // --- GET /rooms/{id} ---
@@ -108,4 +122,5 @@ public class RoomController {
         return "redirect:/rooms/list";
     }
     // ↑↑↑↑↑ RADERA EN BOOKING ↑↑↑↑↑
+
 }

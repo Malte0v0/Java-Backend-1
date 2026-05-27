@@ -1,5 +1,6 @@
 package org.example.javabackend1.Room;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,6 @@ public class RoomCreateDTO {
     @NotNull
     private RoomType roomType;
 
-    @Min(0)
+    @Min(0)@Max(2)
     private int extraBeds;
 }
