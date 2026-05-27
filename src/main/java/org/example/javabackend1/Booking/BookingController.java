@@ -26,6 +26,7 @@ public class BookingController {
         return "bookings/booking";
     }
 
+    // --- GET /bookings/list ---
     @GetMapping("/list")
     public String getAllBookings(Model model) {
         model.addAttribute("bookings", this.bookingService.findAll());
@@ -36,6 +37,7 @@ public class BookingController {
 
     //              ------------------------------ NEW ------------------------------
     // ↓↓↓↓↓ SKAPA EN NY BOOKING ↓↓↓↓↓
+    // --- GET /bookings/new ---
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("booking", new BookingCreateDTO());
@@ -44,6 +46,7 @@ public class BookingController {
         return "bookings/new";
     }
 
+    // --- POST /bookings/new ---
     @PostMapping("/new")
     public String createBooking(@ModelAttribute("booking") BookingCreateDTO dto) {
         this.bookingService.create(dto);
@@ -54,12 +57,14 @@ public class BookingController {
 
 
     //              ------------------------------ EDIT ------------------------------
+    // --- GET /bookings/edit ---
     @GetMapping("/edit")
     public String showEditSearch() {
         return "bookings/edit";
     }
 
     // ↓↓↓↓↓ HITTA EN BOOKING VIA ID ↓↓↓↓↓
+    // --- GET /bookings/edit/find ---
     @GetMapping("/edit/find")
     public String findBookingToEdit(@RequestParam Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
@@ -70,12 +75,14 @@ public class BookingController {
     // ↑↑↑↑↑ HITTA EN BOOKING VIA ID ↑↑↑↑↑
 
     // ↓↓↓↓↓ REDIGERA EN BOOKING ↓↓↓↓↓
+    // --- GET /bookings/{id}/edit ---
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
         return "bookings/edit";
     }
 
+    // --- POST /bookings/{id}/edit ---
     @PostMapping("/{id}/edit")
     public String updateBookingById(@PathVariable Long id,
                                     @ModelAttribute BookingCreateDTO dto) {
@@ -87,12 +94,14 @@ public class BookingController {
 
 
     //              ------------------------------ DELETE ------------------------------
+    // --- GET /bookings/delete ---
     @GetMapping("/delete")
     public String showDeleteSearch() {
         return "bookings/delete";
     }
 
     // ↓↓↓↓↓ RADERA EN BOOKING ↓↓↓↓↓
+    // --- POST /bookings/{id}/delete ---
     @PostMapping("/{id}/delete")
     public String deleteBookingById(@PathVariable Long id) {
         this.bookingService.delete(id);
@@ -101,6 +110,7 @@ public class BookingController {
     // ↑↑↑↑↑ RADERA EN BOOKING ↑↑↑↑↑
 
     // ↓↓↓↓↓ HITTA EN BOOKING VIA ID ↓↓↓↓↓
+    // --- GET /bookings/delete/find ---
     @GetMapping("/delete/find")
     public String findBookingToDelete(@RequestParam Long id, Model model) {
         model.addAttribute("booking", this.bookingService.findById(id));
