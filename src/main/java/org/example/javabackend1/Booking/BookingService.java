@@ -75,8 +75,10 @@ public class BookingService {
 
         List<BookingResponseDTO> responseBookings = new ArrayList<>();
         for (BookingEntity booking : bookings) {
+            if(booking != null) {
             responseBookings.add(toResponse(booking));
         }
+            }
 
         return responseBookings;
     }
