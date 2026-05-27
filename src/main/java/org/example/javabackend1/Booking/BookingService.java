@@ -47,7 +47,6 @@ public class BookingService {
         booking.setCustomer(customerEntity);
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(roomEntity);
-        booking.setStatus(createDTO.getStatus());
 
         BookingEntity saved = bookingRepository.save(booking);
         return toResponse(saved);
@@ -106,7 +105,6 @@ public class BookingService {
         response.setCheckInDate(booking.getCheckInDate());
         response.setCheckOutDate(booking.getCheckOutDate());
         response.setNumberOfGuests(booking.getNumberOfGuests());
-        response.setStatus(booking.getStatus());
         return response;
     }
 }

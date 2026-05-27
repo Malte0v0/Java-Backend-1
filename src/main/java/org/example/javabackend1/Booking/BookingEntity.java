@@ -30,5 +30,4 @@ public class BookingEntity {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int numberOfGuests;
-    private BookingStatus status;
 }

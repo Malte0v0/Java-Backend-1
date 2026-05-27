@@ -23,7 +23,4 @@ public class BookingCreateDTO {
 
     @NotNull
     private int numberOfGuests;
-
-    @NotNull
-    private BookingStatus status;
 }

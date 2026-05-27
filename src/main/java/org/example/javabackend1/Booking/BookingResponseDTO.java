@@ -34,6 +34,4 @@ public class BookingResponseDTO {
     private LocalDate checkOutDate;
     @NotNull
     private int numberOfGuests;
-    @NotNull
-    private BookingStatus status;
 }

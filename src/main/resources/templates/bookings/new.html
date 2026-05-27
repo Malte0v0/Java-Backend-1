@@ -51,16 +51,6 @@
                 <input type="number" th:field="*{numberOfGuests}" min="1"/>
             </label>
         </div>
-        <div>
-            <label>Status</label>
-            <label>
-                <select th:field="*{status}">
-                    <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
-                            th:value="${s}" th:text="${s}">
-                    </option>
-                </select>
-            </label>
-        </div>
 
         <button type="submit">Save</button>
         <a th:href="@{/bookings}">Cancel</a>

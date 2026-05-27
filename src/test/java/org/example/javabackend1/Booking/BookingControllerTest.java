@@ -61,8 +61,7 @@ public class BookingControllerTest {
                 room,
                 LocalDate.of(2025, 9, 1),
                 LocalDate.of(2025, 9, 5),
-                2,
-                BookingStatus.CONFIRMED
+                2
         ));
         savedBookingId = booking.getId();
     }
@@ -123,9 +122,8 @@ public class BookingControllerTest {
                         .param("checkInDate",    "2025-10-01")
                         .param("checkOutDate",   "2025-10-04")
                         .param("numberOfGuests", "2")
-                        .param("status",         "CONFIRMED"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bookings/list"));
+                .andExpect(redirectedUrl("/bookings/list")));
 
         assertThat(bookingRepository.findAll()).hasSize(2);
     }
