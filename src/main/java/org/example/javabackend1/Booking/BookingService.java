@@ -37,20 +37,49 @@ public class BookingService {
 
         createBookingResponseDTO(createDTO, booking, customer, room);
     }
+    private BookingResponseDTO createBookingResponseDTO(
+            BookingCreateDTO createDTO,
+            BookingEntity booking,
+            CustomerEntity customerEntity,
+            RoomEntity roomEntity
+    ) {
+        LocalDate checkInDate = LocalDate.parse(createDTO.getCheckInDate());
+        LocalDate checkOutDate = LocalDate.parse(createDTO.getCheckOutDate());
 
-    private BookingResponseDTO createBookingResponseDTO(BookingCreateDTO createDTO,
-                                                        BookingEntity booking,
-                                                        CustomerEntity customerEntity,
-                                                        RoomEntity roomEntity) {
-        booking.setCheckInDate(LocalDate.parse(createDTO.getCheckInDate()));
-        booking.setCheckOutDate(LocalDate.parse(createDTO.getCheckOutDate()));
+        if (!checkOutDate.isAfter(checkInDate)) {
+            throw new BookingException("Check out must be after check in");
+        }
+
+        checkIfRoomIsAvailable(
+                roomEntity,
+                checkInDate,
+                checkOutDate,
+                booking.getId()
+        );
+
+        booking.setCheckInDate(checkInDate);
+        booking.setCheckOutDate(checkOutDate);
         booking.setCustomer(customerEntity);
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(roomEntity);
 
         BookingEntity saved = bookingRepository.save(booking);
+
         return toResponse(saved);
     }
+//    private BookingResponseDTO createBookingResponseDTO(BookingCreateDTO createDTO,
+//                                                        BookingEntity booking,
+//                                                        CustomerEntity customerEntity,
+//                                                        RoomEntity roomEntity) {
+//        booking.setCheckInDate(LocalDate.parse(createDTO.getCheckInDate()));
+//        booking.setCheckOutDate(LocalDate.parse(createDTO.getCheckOutDate()));
+//        booking.setCustomer(customerEntity);
+//        booking.setNumberOfGuests(createDTO.getNumberOfGuests());
+//        booking.setRoom(roomEntity);
+//
+//        BookingEntity saved = bookingRepository.save(booking);
+//        return toResponse(saved);
+//    }
 
     public void delete(Long id) {
         BookingEntity booking = bookingRepository.findById(id)
@@ -106,5 +135,27 @@ public class BookingService {
         response.setCheckOutDate(booking.getCheckOutDate());
         response.setNumberOfGuests(booking.getNumberOfGuests());
         return response;
+    }
+
+
+    private void checkIfRoomIsAvailable(
+            RoomEntity room,
+            LocalDate checkInDate,
+            LocalDate checkOutDate,
+            Long bookingIdToIgnore
+    ) {
+        List<BookingEntity> overlappingBookings =
+                bookingRepository.findByRoomAndCheckInDateLessThanAndCheckOutDateGreaterThan(
+                        room,
+                        checkOutDate,
+                        checkInDate
+                );
+
+        for (BookingEntity existingBooking : overlappingBookings) {
+            if (bookingIdToIgnore == null ||
+                    !existingBooking.getId().equals(bookingIdToIgnore)) {
+                throw new BookingException("Room is already booked for these dates");
+            }
+        }
     }
 }

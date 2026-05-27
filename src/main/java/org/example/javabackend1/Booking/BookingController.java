@@ -1,6 +1,7 @@
 package org.example.javabackend1.Booking;
 
 import org.example.javabackend1.Customer.CustomerService;
+import org.example.javabackend1.Exceptions.BookingException;
 import org.example.javabackend1.Room.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,10 +49,18 @@ public class BookingController {
 
     // --- POST /bookings/new ---
     @PostMapping("/new")
-    public String createBooking(@ModelAttribute("booking") BookingCreateDTO dto) {
-        this.bookingService.create(dto);
-        return "redirect:/bookings/list";
-    }
+    public String createBooking(@ModelAttribute("booking") BookingCreateDTO dto,
+                                Model model) {
+        try {
+            this.bookingService.create(dto);
+            return "redirect:/bookings/list";
+    }catch (BookingException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("booking", dto);
+            model.addAttribute("customers", customerService.findAll());
+            model.addAttribute("rooms", roomService.findAll());
+            return "bookings/new";
+        }}
     // ↑↑↑↑↑ SKAPA EN NY BOOKING ↑↑↑↑↑
 
 
