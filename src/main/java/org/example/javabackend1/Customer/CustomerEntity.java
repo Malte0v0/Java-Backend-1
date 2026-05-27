@@ -31,8 +31,4 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customer")
     private List<BookingEntity> bookings = new ArrayList<>();
-
-    public List<BookingEntity> getBookings() {
-        return bookings;
-    }
 }
