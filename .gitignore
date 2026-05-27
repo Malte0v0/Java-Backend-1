@@ -1,3 +1,6 @@
+database.db
+test.db
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
