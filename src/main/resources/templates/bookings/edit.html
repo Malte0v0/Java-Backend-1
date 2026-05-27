@@ -11,7 +11,9 @@
     <div th:if="${booking == null}">
         <form th:action="@{/bookings/edit/find}" method="get">
             <label>Booking ID</label>
-            <input type="number" name="id" required />
+            <label>
+                <input type="number" name="id" required />
+            </label>
             <button type="submit">Find</button>
         </form>
     </div>
@@ -20,48 +22,60 @@
         <form th:action="@{/bookings/{id}/edit(id=${booking.id})}" method="post">
             <div>
                 <label>Customer</label>
-                <select name="customerId" required>
-                    <option value="">Select customer</option>
-                    <option th:each="c : ${customers}"
-                            th:value="${c.id}"
-                            th:text="${c.email}"
-                            th:selected="${c.id == booking.customerId}">
-                    </option>
-                </select>
+                <label>
+                    <select name="customerId" required>
+                        <option value="">Select customer</option>
+                        <option th:each="c : ${customers}"
+                                th:value="${c.id}"
+                                th:text="${c.email}"
+                                th:selected="${c.id == booking.customerId}">
+                        </option>
+                    </select>
+                </label>
             </div>
 
             <div>
                 <label>Room</label>
-                <select name="roomId" required>
-                    <option value="">Select room</option>
-                    <option th:each="r : ${rooms}"
-                            th:value="${r.roomId}"
-                            th:text="|Room ${r.roomId} - ${r.roomType} (extra beds: ${r.extraBeds})|"
-                            th:selected="${r.roomId == booking.roomId}">
-                    </option>
-                </select>
+                <label>
+                    <select name="roomId" required>
+                        <option value="">Select room</option>
+                        <option th:each="r : ${rooms}"
+                                th:value="${r.roomId}"
+                                th:text="|Room ${r.roomId} - ${r.roomType} (extra beds: ${r.extraBeds})|"
+                                th:selected="${r.roomId == booking.roomId}">
+                        </option>
+                    </select>
+                </label>
             </div>
 
             <div>
                 <label>Check in</label>
-                <input type="date" name="checkInDate" th:value="${booking.checkInDate}" required />
+                <label>
+                    <input type="date" name="checkInDate" th:value="${booking.checkInDate}" required />
+                </label>
             </div>
             <div>
                 <label>Check out</label>
-                <input type="date" name="checkOutDate" th:value="${booking.checkOutDate}" required />
+                <label>
+                    <input type="date" name="checkOutDate" th:value="${booking.checkOutDate}" required />
+                </label>
             </div>
             <div>
                 <label>Guests</label>
-                <input type="number" name="numberOfGuests" th:value="${booking.numberOfGuests}" min="1" required />
+                <label>
+                    <input type="number" name="numberOfGuests" th:value="${booking.numberOfGuests}" min="1" required />
+                </label>
             </div>
             <div>
                 <label>Status</label>
-                <select name="status">
-                    <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
-                            th:value="${s}" th:text="${s}"
-                            th:selected="${s == booking.status}">
-                    </option>
-                </select>
+                <label>
+                    <select name="status">
+                        <option th:each="s : ${T(org.example.javabackend1.Booking.BookingStatus).values()}"
+                                th:value="${s}" th:text="${s}"
+                                th:selected="${s == booking.status}">
+                        </option>
+                    </select>
+                </label>
             </div>
 
             <button type="submit">Save</button>
