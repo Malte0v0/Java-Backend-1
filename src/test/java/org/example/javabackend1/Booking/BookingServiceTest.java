@@ -54,7 +54,6 @@ class BookingServiceTest {
         dto.setCheckInDate(checkIn);
         dto.setCheckOutDate(checkOut);
         dto.setNumberOfGuests(guests);
-        dto.setStatus(BookingStatus.PENDING);
 
         return dto;
     }
@@ -69,7 +68,6 @@ class BookingServiceTest {
         assertEquals(customerId, result.getCustomerId());
         assertEquals(roomId, result.getRoomId());
         assertEquals(2, result.getNumberOfGuests());
-        assertEquals(BookingStatus.PENDING, result.getStatus());
     }
 
     @Test
@@ -119,11 +117,9 @@ class BookingServiceTest {
         BookingResponseDTO created = bookingService.create(makeDTO("2025-08-01", "2025-08-05", 2));
 
         BookingCreateDTO updateDTO = makeDTO("2025-10-01", "2025-10-10", 3);
-        updateDTO.setStatus(BookingStatus.CONFIRMED);
         bookingService.update(created.getId(), updateDTO);
 
         BookingResponseDTO updated = bookingService.findById(created.getId());
-        assertEquals(BookingStatus.CONFIRMED, updated.getStatus());
         assertEquals(3, updated.getNumberOfGuests());
         assertEquals("2025-10-01", updated.getCheckInDate().toString());
     }

@@ -121,9 +121,9 @@ public class BookingControllerTest {
                         .param("roomId",         roomId.toString())
                         .param("checkInDate",    "2025-10-01")
                         .param("checkOutDate",   "2025-10-04")
-                        .param("numberOfGuests", "2")
+                        .param("numberOfGuests", "2"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bookings/list")));
+                .andExpect(redirectedUrl("/bookings/list"));
 
         assertThat(bookingRepository.findAll()).hasSize(2);
     }
