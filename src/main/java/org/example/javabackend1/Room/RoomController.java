@@ -24,13 +24,11 @@ public class RoomController {
                                      @RequestParam(required = false) String checkOut,
                                      @RequestParam(required = false) Integer guests,
                                      Model model) {
-        if (checkIn != null && checkOut != null && guests != null) {
+        if (checkIn != null && checkOut != null) {
             model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut, guests));
-
-
-        model.addAttribute("checkIn", checkIn);
-        model.addAttribute("checkOut", checkOut);
-        model.addAttribute("guests", guests);
+            model.addAttribute("checkIn", checkIn);
+            model.addAttribute("checkOut", checkOut);
+            model.addAttribute("guests", guests);
         }
         return "rooms/available";
     }

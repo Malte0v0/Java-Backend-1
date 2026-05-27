@@ -47,18 +47,11 @@ public class RoomService {
         return toDTO(room);
     }
 
-    public RoomCreateDTO findCreateDtoById(Long roomId) {
-        RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Hitta inte rummet"));
-
-        return toCreateDTO(room);
-    }
-
     public RoomResponseDTO create(RoomCreateDTO dto) {
         if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
             throw new RoomException("Single rooms cant have extra beds");
         }
-        RoomEntity saved = roomRepository.saveAndFlush(toEntity(dto));
+        RoomEntity saved = roomRepository.save(toEntity(dto));
         return toDTO(saved);
     }
 
@@ -72,7 +65,7 @@ public class RoomService {
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
 
-        RoomEntity saved = roomRepository.saveAndFlush(toEntity(dto));
+        RoomEntity saved = roomRepository.save(room);
         return toDTO(saved);
     }
 
