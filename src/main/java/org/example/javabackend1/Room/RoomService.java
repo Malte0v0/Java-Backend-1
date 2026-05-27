@@ -101,4 +101,12 @@ public class RoomService {
         room.setExtraBeds(dto.getExtraBeds());
         return room;
     }
+    public int getMaxCapacity(RoomResponseDTO room) {
+
+        if (room.getRoomType() == RoomType.SINGLE) {
+            return 1;
+        }
+
+        return 2 + room.getExtraBeds();
+    }
 }
