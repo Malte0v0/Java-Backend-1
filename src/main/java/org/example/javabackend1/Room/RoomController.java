@@ -40,10 +40,10 @@ public class RoomController {
         return "rooms/list";
     }
 
-    // SHOW create form
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("room", new RoomCreateDTO());
+        model.addAttribute("roomTypes", RoomType.values());
         return "rooms/new";
     }
 
