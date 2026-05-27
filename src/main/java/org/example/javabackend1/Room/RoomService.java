@@ -78,6 +78,7 @@ public class RoomService {
         dto.setRoomId(room.getRoomId());
         dto.setRoomType(room.getRoomType());
         dto.setExtraBeds(room.getExtraBeds());
+        dto.setMaxCapacity(room.getMaxCapacity());
         return dto;
     }
 

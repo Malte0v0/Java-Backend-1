@@ -15,7 +15,7 @@
         <input type="date" name="checkOut" th:value="${checkOut}" required />
     </label>
     <label>Guests:
-        <input type="number" name="guests" min="1" max="4" th:value="${guests != null ? guests : 1}" required />
+        <input type="number" name="guests" min="1" th:value="${guests != null ? guests : 1}" required />
     </label>
     <button type="submit">Search</button>
 </form>

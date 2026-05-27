@@ -9,20 +9,18 @@
 <h1>Edit room</h1>
 <form th:action="@{/rooms/{id}/edit(id=${room.roomId})}" th:object="${room}" method="post">
     <label>Room type</label>
+    <label>
+        <select th:field="*{roomType}">
+            <option th:each="type : ${roomTypes}"
+                    th:value="${type}"
+                    th:text="${type}"></option>
 
-    <select th:field="*{roomType}">
-
-        <option th:each="type : ${roomTypes}"
-                th:value="${type}"
-                th:text="${type}"></option>
-
-    </select>
+        </select>
+    </label>
     <div>
         <label>extra beds</label>
         <input type="number" th:field="*{extraBeds}">
     </div>
-    <div>
-
     <button type="submit">update</button>
     <a th:href="@{/rooms/list}">Cancel</a>
 </form>

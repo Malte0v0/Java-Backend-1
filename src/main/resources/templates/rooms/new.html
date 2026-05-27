@@ -10,15 +10,19 @@
 <form th:action="@{/rooms/new}" th:object="${room}" method="post">
     <label>Room type</label>
 
-    <select th:field="*{roomType}">
-        <option th:each="type : ${roomTypes}"
-                th:value="${type}"
-                th:text="${type}">
-        </option>
-    </select>
+    <label>
+        <select th:field="*{roomType}">
+            <option th:each="type : ${roomTypes}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+        </select>
+    </label>
     <div>
         <label>extra beds</label>
-        <input type="number" th:field="*{extraBeds}">
+        <label>
+            <input type="number" th:field="*{extraBeds}" min="0" max="2">
+        </label>
     </div>
 
     <button type="submit">Save</button>

@@ -70,7 +70,7 @@ public class RoomController {
 
 
     //              ------------------------------ EDIT ------------------------------
-    // ↓↓↓↓↓ REDIGERA EN BOOKING ↓↓↓↓↓
+    // ↓↓↓↓↓ REDIGERA ETT ROOM ↓↓↓↓↓
     // --- GET /rooms/{id}/edit ---
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
@@ -86,12 +86,12 @@ public class RoomController {
         roomService.update(id, dto);
         return "redirect:/rooms/list";
     }
-    // ↑↑↑↑↑ REDIGERA EN BOOKING ↑↑↑↑↑
+    // ↑↑↑↑↑ REDIGERA ETT ROOM ↑↑↑↑↑
 
 
 
     //              ------------------------------ DELETE ------------------------------
-    // ↓↓↓↓↓ RADERA EN BOOKING ↓↓↓↓↓
+    // ↓↓↓↓↓ RADERA ETT ROOM ↓↓↓↓↓
     // --- GET /rooms/{id}/delete ---
     @GetMapping("/{id}/delete")
     public String showDeletePage(@PathVariable Long id, Model model) {
@@ -105,5 +105,5 @@ public class RoomController {
         roomService.delete(id);
         return "redirect:/rooms/list";
     }
-    // ↑↑↑↑↑ RADERA EN BOOKING ↑↑↑↑↑
+    // ↑↑↑↑↑ RADERA ETT ROOM ↑↑↑↑↑
 }
