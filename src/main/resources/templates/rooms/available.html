@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Available Rooms</title>
+</head>
+<body>
+
+<h1>Find Available Rooms</h1>
+
+<form method="get" action="/rooms/available">
+    <label>Check-in:
+        <input type="date" name="checkIn" th:value="${checkIn}" required />
+    </label>
+    <label>Check-out:
+        <input type="date" name="checkOut" th:value="${checkOut}" required />
+    </label>
+    <label>Guests:
+        <input type="number" name="guests" min="1" max="4" th:value="${guests != null ? guests : 1}" required />
+    </label>
+    <button type="submit">Search</button>
+</form>
+
+<div th:if="${rooms != null}">
+    <h2>Results</h2>
+
+    <p th:if="${rooms.isEmpty()}">No rooms available.</p>
+
+    <table th:unless="${rooms.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Room ID</th>
+            <th>Type</th>
+            <th>Extra Beds</th>
+            <th>Max Guests</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="room : ${rooms}">
+            <td th:text="${room.roomId}"></td>
+            <td th:text="${room.roomType}"></td>
+            <td th:text="${room.extraBeds}"></td>
+            <td th:text="${room.maxCapacity}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

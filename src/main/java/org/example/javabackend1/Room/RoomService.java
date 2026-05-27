@@ -16,7 +16,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<RoomResponseDTO> findAvailableRooms(String checkInDate, String checkOutDate) {
+    public List<RoomResponseDTO> findAvailableRooms(String checkInDate, String checkOutDate, int guests) {
         LocalDate checkIn = LocalDate.parse(checkInDate);
         LocalDate checkOut = LocalDate.parse(checkOutDate);
 
@@ -26,7 +26,7 @@ public class RoomService {
 
         List<RoomResponseDTO> responseRooms = new ArrayList<>();
 
-        for (RoomEntity room : roomRepository.findAvailableRooms(checkIn, checkOut)) {
+        for (RoomEntity room : roomRepository.findAvailableRooms(checkIn, checkOut, guests)) {
             responseRooms.add(toDTO(room));
         }
 
@@ -55,20 +55,24 @@ public class RoomService {
     }
 
     public RoomResponseDTO create(RoomCreateDTO dto) {
+        if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
+            throw new RoomException("Single rooms cant have extra beds");
+        }
         RoomEntity room = toEntity(dto);
-        RoomEntity savedRoom = roomRepository.save(room);
-        return toDTO(savedRoom);
+        return toDTO(roomRepository.save(room));
     }
 
     public RoomResponseDTO update(Long roomId, RoomCreateDTO dto) {
-        RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("hitta inte rummet"));
+        if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
+            throw new RoomException("Single rooms cant have extra beds");
+        }
 
+        RoomEntity room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RoomException("Room was not found"));
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
 
-        RoomEntity savedRoom = roomRepository.save(room);
-        return toDTO(savedRoom);
+        return toDTO(roomRepository.save(room));
     }
 
     public void delete(Long roomId) {

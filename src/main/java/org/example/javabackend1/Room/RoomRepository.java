@@ -16,6 +16,11 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
             WHERE booking.checkInDate < :checkOut
             AND booking.checkOutDate > :checkIn
         )
+        AND (
+            (room.roomType = 'SINGLE' AND 1 >= :guests)
+            OR
+            (room.roomType = 'DOUBLE' AND (2 + room.extraBeds) >= :guests)
+        )
         """)
-    List<RoomEntity> findAvailableRooms(LocalDate checkIn, LocalDate checkOut);
+    List<RoomEntity> findAvailableRooms(LocalDate checkIn, LocalDate checkOut, int guests);
 }

@@ -20,10 +20,16 @@ public class RoomController {
     @GetMapping("/available")
     public String showAvailableRooms(@RequestParam(required = false) String checkIn,
                                      @RequestParam(required = false) String checkOut,
+                                     @RequestParam(required = false, defaultValue = "1") int guests,
                                      Model model) {
         if (checkIn != null && checkOut != null) {
-            model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut));
+            model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut, guests));
         }
+
+        model.addAttribute("checkIn", checkIn);
+        model.addAttribute("checkOut", checkOut);
+        model.addAttribute("guests", guests);
+
         return "rooms/available";
     }
 

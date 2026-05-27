@@ -19,4 +19,9 @@ public class RoomEntity {
     private RoomType roomType;
 
     private int extraBeds;
+
+    public int getMaxCapacity() {
+        if (roomType == RoomType.SINGLE) return 1;
+        return 2 + extraBeds;
+    }
 }
