@@ -1,5 +1,6 @@
 package org.example.javabackend1.Room;
 
+import org.example.javabackend1.Exceptions.RoomException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -54,9 +55,16 @@ public class RoomController {
 
     // --- POST /rooms/new ---
     @PostMapping("/new")
-    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
-        roomService.create(dto);
-        return "redirect:/rooms/list";
+    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto, Model model) {
+        try {
+            roomService.create(dto);
+            return "redirect:/rooms/list";
+        } catch (RoomException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("room", dto);
+            model.addAttribute("roomTypes", RoomType.values());
+            return "rooms/new";
+        }
     }
     // ↑↑↑↑↑ SKAPA EN NY BOOKING ↑↑↑↑↑
 
