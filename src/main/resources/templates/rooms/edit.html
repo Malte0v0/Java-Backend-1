@@ -7,10 +7,15 @@
 <body>
 <h1>Edit room</h1>
 <form th:action="@{/rooms/{id}/edit(id=${room.roomId})}" th:object="${room}" method="post">
-    <div>
-        <label>room type</label><!-- inte klar -->
-        <input type="text" th:field="*{roomType}">
-    </div>
+    <label>Room type</label>
+
+    <select th:field="*{roomType}">
+
+        <option th:each="type : ${roomTypes}"
+                th:value="${type}"
+                th:text="${type}"></option>
+
+    </select>
     <div>
         <label>extra beds</label>
         <input type="number" th:field="*{extraBeds}">
