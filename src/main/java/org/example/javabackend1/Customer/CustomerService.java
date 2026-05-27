@@ -63,17 +63,16 @@ public class CustomerService {
     }
 
     private CustomerResponseDTO createCustomerResponseDTO(CustomerCreateDTO createDTO, CustomerEntity customer) {
-        // Skapa en customer
         customer.setEmail(createDTO.getEmail());
         customer.setFirstName(createDTO.getFirstName());
         customer.setLastName(createDTO.getLastName());
         customer.setPhone(createDTO.getPhone());
 
-        // Spara till databasen, få en customer med id som return value
-        CustomerEntity saved = customerRepository.save(customer);
+        CustomerEntity saved = customerRepository.saveAndFlush(customer);
 
-        // Returnera ett response dto
-        return toResponse(saved);
+        CustomerEntity reloaded = customerRepository.findById(saved.getId())
+                .orElseThrow(() -> new CustomerException("Customer not found after save"));
+        return toResponse(reloaded);
     }
 
     public CustomerResponseDTO toResponse(CustomerEntity customer) {

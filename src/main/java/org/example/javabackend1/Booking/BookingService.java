@@ -3,7 +3,6 @@ package org.example.javabackend1.Booking;
 import org.example.javabackend1.Customer.CustomerEntity;
 import org.example.javabackend1.Customer.CustomerRepository;
 import org.example.javabackend1.Exceptions.BookingException;
-import org.example.javabackend1.Exceptions.CustomerException;
 import org.example.javabackend1.Room.RoomEntity;
 import org.example.javabackend1.Room.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,6 @@ public class BookingService {
         booking.setStatus(createDTO.getStatus());
 
         BookingEntity saved = bookingRepository.save(booking);
-
         return toResponse(saved);
     }
 
@@ -90,7 +88,6 @@ public class BookingService {
         RoomEntity room = roomRepository.findById(createDTO.getRoomId())
                 .orElseThrow(() -> new BookingException("Room not found"));
 
-        // Skapa en booking
         BookingEntity booking = new BookingEntity();
 
         return createBookingResponseDTO(createDTO, booking, customer, room);

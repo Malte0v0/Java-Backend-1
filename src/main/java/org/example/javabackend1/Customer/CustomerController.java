@@ -24,13 +24,14 @@ public class CustomerController {
         return "customers/list";
     }
 
-    // /customers/new
+
+
+    //              ------------------------------ NEW ------------------------------
+    // ↓↓↓↓↓ SKAPA EN NY CUSTOMER ↓↓↓↓↓
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("customer", new CustomerCreateDTO());
         return "customers/new";
-        // Visar
-        // templates/customers/new.html
     }
 
     @PostMapping("/new")
@@ -38,64 +39,68 @@ public class CustomerController {
         this.customerService.create(dto);
         return "redirect:/customers/list";
     }
-    // Efter save:
-    // gå tillbaka till customerlistan.
+    // ↑↑↑↑↑ SKAPA EN NY CUSTOMER ↑↑↑↑↑
 
-    // /customers/edit
+
+
+    //              ------------------------------ EDIT ------------------------------
     @GetMapping("/edit")
     public String showEditSearch() {
         return "customers/edit";
     }
 
+    // ↓↓↓↓↓ HITTA EN CUSTOMER VIA ID ↓↓↓↓↓
     @GetMapping("/edit/find")
     public String findCustomerToEdit(@RequestParam Long id, Model model) {
         model.addAttribute("customer", this.customerService.findById(id));
         return "customers/edit";
     }
+    // ↑↑↑↑↑ HITTA EN CUSTOMER VIA ID ↑↑↑↑↑
 
-    // /customers/3/edit
+    // ↓↓↓↓↓ REDIGERA EN CUSTOMER ↓↓↓↓↓
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customerService.findById(id));
-        // templates/customers/edit.html
         return "customers/edit";
     }
 
     @PostMapping("/{id}/edit")
-    public String updateCustomerById(@PathVariable Long id,
-                                    @ModelAttribute("customer") CustomerCreateDTO dto) {
+    public String updateCustomerById(@PathVariable Long id, @ModelAttribute("customer") CustomerCreateDTO dto) {
         customerService.update(id, dto);
         return "redirect:/customers/list";
     }
+    // ↑↑↑↑↑ REDIGERA EN CUSTOMER ↑↑↑↑↑
 
-    // /customers/delete
+
+
+    //              ------------------------------ DELETE ------------------------------
     @GetMapping("/delete")
     public String showDeleteSearch() {
         return "redirect:/customers/list";
     }
 
-    // /customers/3/delete
+    // ↓↓↓↓↓ RADERA EN CUSTOMER ↓↓↓↓↓
     @GetMapping("/{id}/delete")
     public String showDeletePage(
             @PathVariable Long id, Model model) {
         model.addAttribute("customer",
                 this.customerService.findById(id));
-        // Hämtar customer som ska tas bort.
         return "customers/delete";
     }
 
-    // Körs när man söker customer att deletea via id.
-    @GetMapping("/delete/find")
-    public String findCustomerToDelete(@RequestParam Long id, Model model) {
-        model.addAttribute("customer", this.customerService.findById(id));
-        return "customers/delete";
-    }
-
-    // Körs när delet knappen trycks.
     @PostMapping("/{id}/delete")
     public String deleteCustomerById(@PathVariable Long id) {
         this.customerService.delete(id);
         return "redirect:/customers/list";
     }
+    // ↑↑↑↑↑ RADERA EN CUSTOMER ↑↑↑↑↑
+
+    // ↓↓↓↓↓ HITTA EN CUSTOMER VIA ID ↓↓↓↓↓
+    @GetMapping("/delete/find")
+    public String findCustomerToDelete(@RequestParam Long id, Model model) {
+        model.addAttribute("customer", this.customerService.findById(id));
+        return "customers/delete";
+    }
+    // ↑↑↑↑↑ HITTA EN CUSTOMER VIA ID ↑↑↑↑↑
 }
 

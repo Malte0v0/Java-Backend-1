@@ -58,8 +58,8 @@ public class RoomService {
         if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
             throw new RoomException("Single rooms cant have extra beds");
         }
-        RoomEntity room = toEntity(dto);
-        return toDTO(roomRepository.save(room));
+        RoomEntity saved = roomRepository.saveAndFlush(toEntity(dto));
+        return toDTO(saved);
     }
 
     public RoomResponseDTO update(Long roomId, RoomCreateDTO dto) {
@@ -72,7 +72,8 @@ public class RoomService {
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
 
-        return toDTO(roomRepository.save(room));
+        RoomEntity saved = roomRepository.saveAndFlush(toEntity(dto));
+        return toDTO(saved);
     }
 
     public void delete(Long roomId) {
