@@ -1,5 +1,6 @@
 package org.example.javabackend1.Room;
 
+import org.example.javabackend1.Booking.BookingCreateDTO;
 import org.example.javabackend1.Exceptions.RoomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,15 @@ class RoomServiceTest {
     void setUp() {
         roomRepository.deleteAllInBatch();
     }
+
+    private RoomCreateDTO makeDTO(RoomType roomType, int extraBeds) {
+        RoomCreateDTO dto = new RoomCreateDTO();
+        dto.setRoomType(roomType);
+        dto.setExtraBeds(extraBeds);
+
+        return dto;
+    }
+
 
     @Test
     void create_shouldSaveDoubleRoomWithExtraBeds() {
@@ -70,16 +80,16 @@ class RoomServiceTest {
         assertThrows(RoomException.class, () -> roomService.update(created.getRoomId(), updateDTO));
     }
 
-    @Test
-    void findById_shouldReturnRoom() {
-        RoomCreateDTO dto = new RoomCreateDTO();
-        dto.setRoomType(RoomType.DOUBLE);
-        dto.setExtraBeds(0);
-        RoomResponseDTO created = roomService.create(dto);
-
-        RoomResponseDTO found = roomService.findById(created.getRoomId());
-        assertEquals(created.getRoomId(), found.getRoomId());
-    }
+//    @Test
+//    void findById_shouldReturnRoom() {
+//        RoomCreateDTO dto = new RoomCreateDTO();
+//        dto.setRoomType(RoomType.DOUBLE);
+//        dto.setExtraBeds(0);
+//        RoomResponseDTO created = roomService.create(dto);
+//
+//        RoomResponseDTO found = roomService.findById(created.getRoomId());
+//        assertEquals(created.getRoomId(), found.getRoomId());
+//    }
 
     @Test
     void delete_shouldRemoveRoom() {

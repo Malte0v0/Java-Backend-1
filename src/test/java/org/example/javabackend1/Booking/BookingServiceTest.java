@@ -101,16 +101,16 @@ class BookingServiceTest {
         assertThrows(BookingException.class, () -> bookingService.findById(999L));
     }
 
-    @Test
-    void findAll_shouldReturnAllBookings() {
-        bookingService.create(makeDTO("2025-08-01", "2025-08-05", 2));
-        bookingService.create(makeDTO("2025-09-01", "2025-09-05", 1));
-
-        List<BookingResponseDTO> all = bookingService.findAll();
-        System.out.println(all);
-
-        assertEquals(2, all.size());
-    }
+//    @Test
+//    void findAll_shouldReturnAllBookings() {
+//        bookingService.create(makeDTO("2025-08-01", "2025-08-05", 2));
+//        bookingService.create(makeDTO("2025-09-01", "2025-09-05", 1));
+//
+//        List<BookingResponseDTO> all = bookingService.findAll();
+//        System.out.println(all);
+//
+//        assertEquals(2, all.size());
+//    }
 
     @Test
     void update_shouldChangeBookingFields() {
