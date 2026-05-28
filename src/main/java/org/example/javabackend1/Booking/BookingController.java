@@ -1,11 +1,15 @@
 package org.example.javabackend1.Booking;
 
+import org.example.javabackend1.Customer.CustomerResponseDTO;
 import org.example.javabackend1.Customer.CustomerService;
 import org.example.javabackend1.Exceptions.BookingException;
+import org.example.javabackend1.Room.RoomResponseDTO;
 import org.example.javabackend1.Room.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/bookings")
@@ -87,7 +91,22 @@ public class BookingController {
     // --- GET /bookings/{id}/edit ---
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable Long id, Model model) {
-        model.addAttribute("booking", this.bookingService.findById(id));
+        BookingResponseDTO booking = this.bookingService.findById(id);
+        model.addAttribute("booking", booking);
+
+        List<CustomerResponseDTO> customers = this.customerService.findAll();
+        List<RoomResponseDTO> rooms = this.roomService.findAll();
+
+        customers.stream()
+                .filter(c -> c.getId().equals(booking.getCustomerId()))
+                .findFirst()
+                .ifPresent(c -> model.addAttribute("customerDisplay", c.getEmail()));
+
+        rooms.stream()
+                .filter(r -> r.getRoomId().equals(booking.getRoomId()))
+                .findFirst()
+                .ifPresent(r -> model.addAttribute("roomDisplay",
+                        "Room " + r.getRoomId() + " - " + r.getRoomType() + " (extra beds: " + r.getExtraBeds() + ")"));
         return "bookings/edit";
     }
 
