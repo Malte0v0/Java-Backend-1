@@ -15,6 +15,16 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    public CustomerResponseDTO create(CustomerCreateDTO createDTO) {
+        if (customerRepository.findByEmail(createDTO.getEmail()).isPresent()) {
+            throw new CustomerException("Email already in use");
+        }
+
+        CustomerEntity customer = new CustomerEntity();
+
+        return createCustomerResponseDTO(createDTO, customer);
+    }
+
     public CustomerResponseDTO update(Long id, CustomerCreateDTO createDTO) {
         CustomerEntity customer = customerRepository.findById(id)
                 .orElseThrow(
@@ -36,36 +46,6 @@ public class CustomerService {
         }
 
         customerRepository.delete(customer);
-    }
-
-    public CustomerResponseDTO findById(Long id) {
-        CustomerEntity customer = customerRepository.findById(id)
-                .orElseThrow(
-                        () -> new CustomerException("User with id " + String.valueOf(id) + " does not exist")
-                );
-
-        return toResponse(customer);
-    }
-
-    public List<CustomerResponseDTO> findAll() {
-        List<CustomerEntity> customers = customerRepository.findAll();
-
-        List<CustomerResponseDTO> responseBookings = new ArrayList<>();
-        for (CustomerEntity customer : customers) {
-            responseBookings.add(toResponse(customer));
-        }
-
-        return responseBookings;
-    }
-
-    public CustomerResponseDTO create(CustomerCreateDTO createDTO) {
-        if (customerRepository.findByEmail(createDTO.getEmail()).isPresent()) {
-            throw new CustomerException("Email already in use");
-        }
-
-        CustomerEntity customer = new CustomerEntity();
-
-        return createCustomerResponseDTO(createDTO, customer);
     }
 
     private CustomerResponseDTO createCustomerResponseDTO(CustomerCreateDTO createDTO, CustomerEntity customer) {
@@ -90,5 +70,25 @@ public class CustomerService {
         response.setPhone(customer.getPhone());
 
         return response;
+    }
+
+    public CustomerResponseDTO findById(Long id) {
+        CustomerEntity customer = customerRepository.findById(id)
+                .orElseThrow(
+                        () -> new CustomerException("User with id " + String.valueOf(id) + " does not exist")
+                );
+
+        return toResponse(customer);
+    }
+
+    public List<CustomerResponseDTO> findAll() {
+        List<CustomerEntity> customers = customerRepository.findAll();
+
+        List<CustomerResponseDTO> responseBookings = new ArrayList<>();
+        for (CustomerEntity customer : customers) {
+            responseBookings.add(toResponse(customer));
+        }
+
+        return responseBookings;
     }
 }
