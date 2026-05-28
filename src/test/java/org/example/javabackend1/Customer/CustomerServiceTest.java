@@ -55,16 +55,16 @@ class CustomerServiceTest {
     @Test
     void findById_shouldReturnCustomer() {
         CustomerCreateDTO dto = new CustomerCreateDTO();
-        dto.setFirstName("Erik");
-        dto.setLastName("Karlsson");
-        dto.setEmail("erik@test.com");
-        dto.setPhone("0709876543");
+        dto.setFirstName("Bengt");
+        dto.setLastName("Svensson");
+        dto.setEmail("bengt@test.com");
+        dto.setPhone("070485648");
 
         CustomerResponseDTO created = customerService.create(dto);
         CustomerResponseDTO found = customerService.findById(created.getId());
 
         assertEquals(created.getId(), found.getId());
-        assertEquals("Erik", found.getFirstName());
+        assertEquals("Bengt", found.getFirstName());
     }
 
     @Test
