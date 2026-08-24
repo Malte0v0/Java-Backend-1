@@ -2,11 +2,13 @@ package org.example.javabackend1.Customer;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.javabackend1.Booking.BookingEntity;
 
-@AllArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Data
 @Entity
@@ -24,4 +26,7 @@ public class CustomerEntity {
     private String email;
 
     private String phone;
+
+    @OneToMany(mappedBy = "customer")
+    private List<BookingEntity> bookings = new ArrayList<>();
 }

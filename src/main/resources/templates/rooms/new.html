@@ -7,41 +7,31 @@
 <body>
 <div th:replace="~{fragment/navbar :: navbar}"></div>
 <h1>Create room</h1>
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
 <form th:action="@{/rooms/new}" th:object="${room}" method="post">
     <label>Room type</label>
 
-    <select th:field="*{roomType}">
-        <option th:each="type : ${roomTypes}"
-                th:value="${type}"
-                th:text="${type}">
-        </option>
-    </select>
+    <label>
+        <select th:field="*{roomType}" id="roomType">
+            <option th:each="type : ${roomTypes}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+        </select>
+    </label>
     <div>
-        <label>extra beds</label>
-        <input type="number" th:field="*{extraBeds}">
+        <label>Extra beds</label>
+        <label>
+            <input type="number" th:field="*{extraBeds}" min="0" max="2">
+        </label>
     </div>
 
     <button type="submit">Save</button>
 
     <a th:href="@{/rooms/list}">Cancel</a>
 </form>
-<script>
-    const roomType = document.getElementById("roomType");
-    const extraBeds = document.getElementById("extraBeds");
 
-    function updateExtraBeds() {
-        if (roomType.value === "SINGLE") {
-            extraBeds.value = 0;
-            extraBeds.disabled = true;
-        } else {
-            extraBeds.disabled = false;
-            extraBeds.min = 0;
-            extraBeds.max = 2;
-        }
-    }
-
-    roomType.addEventListener("change", updateExtraBeds);
-    updateExtraBeds();
-</script>
 </body>
 </html>

@@ -17,4 +17,6 @@ public class RoomResponseDTO {
 
     @NotNull
     private int extraBeds;
+
+    private Integer maxCapacity;
 }

@@ -1,5 +1,6 @@
 package org.example.javabackend1.Customer;
 
+import org.example.javabackend1.Exceptions.CustomerException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -99,9 +100,15 @@ public class CustomerController {
 
     // --- POST /customers/{id}/delete ---
     @PostMapping("/{id}/delete")
-    public String deleteCustomerById(@PathVariable Long id) {
-        this.customerService.delete(id);
-        return "redirect:/customers/list";
+    public String deleteCustomerById(@PathVariable Long id, Model model) {
+        try {
+            this.customerService.delete(id);
+            return "redirect:/customers/list";
+        } catch (CustomerException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("customer", customerService.findById(id));
+            return "customers/delete";
+        }
     }
     // ↑↑↑↑↑ RADERA EN CUSTOMER ↑↑↑↑↑
 

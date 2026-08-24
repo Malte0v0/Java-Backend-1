@@ -27,25 +27,25 @@ class CustomerServiceTest {
     @Test
     void create_shouldSaveAndReturnCustomer() {
         CustomerCreateDTO dto = new CustomerCreateDTO();
-        dto.setFirstName("Anna");
+        dto.setFirstName("Bengt");
         dto.setLastName("Svensson");
-        dto.setEmail("anna@test.com");
-        dto.setPhone("0701234567");
+        dto.setEmail("bengt@test.com");
+        dto.setPhone("070485648");
 
         CustomerResponseDTO result = customerService.create(dto);
 
         assertNotNull(result.getId());
-        assertEquals("Anna", result.getFirstName());
-        assertEquals("anna@test.com", result.getEmail());
+        assertEquals("Bengt", result.getFirstName());
+        assertEquals("bengt@test.com", result.getEmail());
     }
 
     @Test
     void create_shouldThrow_whenEmailAlreadyExists() {
         CustomerCreateDTO dto = new CustomerCreateDTO();
-        dto.setFirstName("Anna");
+        dto.setFirstName("Bengt");
         dto.setLastName("Svensson");
         dto.setEmail("duplicate@test.com");
-        dto.setPhone("0701234567");
+        dto.setPhone("070485648");
 
         customerService.create(dto);
 
@@ -55,16 +55,16 @@ class CustomerServiceTest {
     @Test
     void findById_shouldReturnCustomer() {
         CustomerCreateDTO dto = new CustomerCreateDTO();
-        dto.setFirstName("Erik");
-        dto.setLastName("Karlsson");
-        dto.setEmail("erik@test.com");
-        dto.setPhone("0709876543");
+        dto.setFirstName("Bengt");
+        dto.setLastName("Svensson");
+        dto.setEmail("bengt@test.com");
+        dto.setPhone("070485648");
 
         CustomerResponseDTO created = customerService.create(dto);
         CustomerResponseDTO found = customerService.findById(created.getId());
 
         assertEquals(created.getId(), found.getId());
-        assertEquals("Erik", found.getFirstName());
+        assertEquals("Bengt", found.getFirstName());
     }
 
     @Test

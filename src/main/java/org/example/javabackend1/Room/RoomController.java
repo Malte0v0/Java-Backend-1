@@ -1,9 +1,8 @@
 package org.example.javabackend1.Room;
 
-import jakarta.validation.Valid;
+import org.example.javabackend1.Exceptions.RoomException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -26,13 +25,11 @@ public class RoomController {
                                      @RequestParam(required = false) String checkOut,
                                      @RequestParam(required = false) Integer guests,
                                      Model model) {
-        if (checkIn != null && checkOut != null && guests != null) {
+        if (checkIn != null && checkOut != null) {
             model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut, guests));
-
-
-        model.addAttribute("checkIn", checkIn);
-        model.addAttribute("checkOut", checkOut);
-        model.addAttribute("guests", guests);
+            model.addAttribute("checkIn", checkIn);
+            model.addAttribute("checkOut", checkOut);
+            model.addAttribute("guests", guests);
         }
         return "rooms/available";
     }
@@ -58,22 +55,17 @@ public class RoomController {
 
     // --- POST /rooms/new ---
     @PostMapping("/new")
-    public String createRoom(@Valid @ModelAttribute("room") RoomCreateDTO dto,
-                             BindingResult bindingResult,
-                             Model model) {
-        if (bindingResult.hasErrors()) {
+    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto, Model model) {
+        try {
+            roomService.create(dto);
+            return "redirect:/rooms/list";
+        } catch (RoomException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("room", dto);
             model.addAttribute("roomTypes", RoomType.values());
             return "rooms/new";
         }
-
-        roomService.create(dto);
-        return "redirect:/rooms/list";
     }
-//    @PostMapping("/new")
-//    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto) {
-//        roomService.create(dto);
-//        return "redirect:/rooms/list";
-//    }
     // ↑↑↑↑↑ SKAPA EN NY BOOKING ↑↑↑↑↑
 
     // --- GET /rooms/{id} ---
@@ -86,7 +78,7 @@ public class RoomController {
 
 
     //              ------------------------------ EDIT ------------------------------
-    // ↓↓↓↓↓ REDIGERA EN BOOKING ↓↓↓↓↓
+    // ↓↓↓↓↓ REDIGERA ETT ROOM ↓↓↓↓↓
     // --- GET /rooms/{id}/edit ---
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
@@ -102,12 +94,12 @@ public class RoomController {
         roomService.update(id, dto);
         return "redirect:/rooms/list";
     }
-    // ↑↑↑↑↑ REDIGERA EN BOOKING ↑↑↑↑↑
+    // ↑↑↑↑↑ REDIGERA ETT ROOM ↑↑↑↑↑
 
 
 
     //              ------------------------------ DELETE ------------------------------
-    // ↓↓↓↓↓ RADERA EN BOOKING ↓↓↓↓↓
+    // ↓↓↓↓↓ RADERA ETT ROOM ↓↓↓↓↓
     // --- GET /rooms/{id}/delete ---
     @GetMapping("/{id}/delete")
     public String showDeletePage(@PathVariable Long id, Model model) {
@@ -121,6 +113,5 @@ public class RoomController {
         roomService.delete(id);
         return "redirect:/rooms/list";
     }
-    // ↑↑↑↑↑ RADERA EN BOOKING ↑↑↑↑↑
-
+    // ↑↑↑↑↑ RADERA ETT ROOM ↑↑↑↑↑
 }

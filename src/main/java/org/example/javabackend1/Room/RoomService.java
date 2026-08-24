@@ -47,32 +47,25 @@ public class RoomService {
         return toDTO(room);
     }
 
-    public RoomCreateDTO findCreateDtoById(Long roomId) {
-        RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Hitta inte rummet"));
-
-        return toCreateDTO(room);
-    }
-
     public RoomResponseDTO create(RoomCreateDTO dto) {
-        validateRoom(dto);
         if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
             throw new RoomException("Single rooms cant have extra beds");
         }
-        RoomEntity saved = roomRepository.saveAndFlush(toEntity(dto));
+        RoomEntity saved = roomRepository.save(toEntity(dto));
         return toDTO(saved);
     }
 
     public RoomResponseDTO update(Long roomId, RoomCreateDTO dto) {
-        validateRoom(dto);
+        if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
+            throw new RoomException("Single rooms cant have extra beds");
+        }
 
         RoomEntity room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RoomException("Room was not found"));
-
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
 
-        RoomEntity saved = roomRepository.saveAndFlush(room);
+        RoomEntity saved = roomRepository.save(room);
         return toDTO(saved);
     }
 
@@ -85,6 +78,7 @@ public class RoomService {
         dto.setRoomId(room.getRoomId());
         dto.setRoomType(room.getRoomType());
         dto.setExtraBeds(room.getExtraBeds());
+        dto.setMaxCapacity(room.getMaxCapacity());
         return dto;
     }
 
@@ -101,19 +95,12 @@ public class RoomService {
         room.setExtraBeds(dto.getExtraBeds());
         return room;
     }
+    public int getMaxCapacity(RoomResponseDTO room) {
 
-
-    private void validateRoom(RoomCreateDTO dto) {
-        if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
-            throw new RoomException("Single rooms can't have extra beds");
+        if (room.getRoomType() == RoomType.SINGLE) {
+            return 1;
         }
 
-        if (dto.getRoomType() == RoomType.DOUBLE && dto.getExtraBeds() > 2) {
-            throw new RoomException("Double rooms can have max 2 extra beds");
-        }
-
-        if (dto.getExtraBeds() < 0) {
-            throw new RoomException("Extra beds cannot be negative");
-        }
+        return 2 + room.getExtraBeds();
     }
 }
