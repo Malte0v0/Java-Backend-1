@@ -2,15 +2,12 @@ package org.example.javabackend1.Customer;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.example.javabackend1.Booking.BookingEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@Data
+
 @Entity
 @Table(name = "customer")
 public class CustomerEntity {
@@ -29,4 +26,56 @@ public class CustomerEntity {
 
     @OneToMany(mappedBy = "customer")
     private List<BookingEntity> bookings = new ArrayList<>();
+
+
+    public CustomerEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public List<BookingEntity> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<BookingEntity> bookings) {
+        this.bookings = bookings;
+    }
 }
