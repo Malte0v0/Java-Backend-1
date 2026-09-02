@@ -30,7 +30,7 @@ class RoomServiceTest {
 
         RoomResponseDTO result = roomService.create(dto);
 
-        assertNotNull(result.getRoomId());
+        assertNotNull(result.getId());
         assertEquals(RoomType.DOUBLE, result.getRoomType());
         assertEquals(1, result.getExtraBeds());
     }
@@ -67,7 +67,7 @@ class RoomServiceTest {
         updateDTO.setRoomType(RoomType.SINGLE);
         updateDTO.setExtraBeds(1);
 
-        assertThrows(RoomException.class, () -> roomService.update(created.getRoomId(), updateDTO));
+        assertThrows(RoomException.class, () -> roomService.update(created.getId(), updateDTO));
     }
     @Test
     void findById_shouldReturnRoom() {
@@ -78,7 +78,7 @@ class RoomServiceTest {
         RoomResponseDTO created = roomService.create(dto);
 
         assertNotNull(created);
-        assertNotNull(created.getRoomId());
+        assertNotNull(created.getId());
         assertEquals(RoomType.DOUBLE, created.getRoomType());
         assertEquals(1, created.getExtraBeds());
     }
@@ -90,9 +90,9 @@ class RoomServiceTest {
         dto.setExtraBeds(0);
         RoomResponseDTO created = roomService.create(dto);
 
-        roomService.delete(created.getRoomId());
+        roomService.delete(created.getId());
 
-        assertThrows(RuntimeException.class, () -> roomService.findById(created.getRoomId()));
+        assertThrows(RuntimeException.class, () -> roomService.findById(created.getId()));
     }
 
     @Test

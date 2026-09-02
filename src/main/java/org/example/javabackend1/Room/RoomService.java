@@ -75,7 +75,7 @@ public class RoomService {
 
     private RoomResponseDTO toDTO(RoomEntity room) {
         RoomResponseDTO dto = new RoomResponseDTO();
-        dto.setRoomId(room.getRoomId());
+        dto.setId(room.getId());
         dto.setRoomType(room.getRoomType());
         dto.setExtraBeds(room.getExtraBeds());
         dto.setMaxCapacity(room.getMaxCapacity());

@@ -4,7 +4,12 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import CustomerList from "./pages/CustomerList";
+import CustomerForm from "./pages/CustomerForm";
 import './App.css'
+import BookingList from "./pages/BookingList.jsx";
+import BookingForm from "./pages/BookingForm.jsx";
+import RoomForm from "./pages/RoomForm.jsx";
+import RoomList from "./pages/RoomList.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,20 +23,18 @@ function App() {
         </nav>
 
         <Routes>
-          <Route path="/customers" element={<CustomerList/>} />
-          {/*<Route path="/customers/new" element={<CustomerForm />} />*/}
-          {/*<Route path="/customers/:id/edit" element={<CustomerForm />} />*/}
+          <Route path="/customers" element={<CustomerList/>}/>
+          <Route path="/customers/new" element={<CustomerForm/>}/>
+          <Route path="/customers/:id/edit" element={<CustomerForm/>}/>
 
-          {/* Same shape once you build these:
-        <Route path="/rooms" element={<RoomList />} />
-        <Route path="/rooms/new" element={<RoomForm />} />
-        <Route path="/rooms/:id/edit" element={<RoomForm />} />
-        <Route path="/rooms/available" element={<RoomAvailability />} />
+            <Route path="/rooms" element={<RoomList/>} />
+            <Route path="/rooms/new" element={<RoomForm/>}/>
+            <Route path="/rooms/:id/edit" element={<RoomForm/>}/>
+            {/*<Route path="/rooms/available" element={<RoomAvailability />} />*/}
 
-        <Route path="/bookings" element={<BookingList />} />
-        <Route path="/bookings/new" element={<BookingForm />} />
-        <Route path="/bookings/:id/edit" element={<BookingForm />} />
-        */}
+            <Route path="/bookings" element={<BookingList/>}/>
+            <Route path="/bookings/new" element={<BookingForm/>} />
+            <Route path="/bookings/:id/edit" element={<BookingForm/>} />
         </Routes>
       </BrowserRouter>
   );

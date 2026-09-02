@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class RoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roomId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private RoomType roomType;

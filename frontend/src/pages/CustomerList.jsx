@@ -5,13 +5,13 @@ import { getCustomers, deleteCustomer } from "../api";
 export default function CustomerList() {
     const [customers, setCustomers] = useState([]);
 
-    const load = () => getCustomers().then(setCustomers);
+    const load = () => getCustomers().then(data => setCustomers(data));
     useEffect(() => { load(); }, []);
 
     return (
         <div>
             <h1>Customers</h1>
-            <Link to="/customers/new">+ New customer</Link>
+            <Link to="/customers/new">New customer</Link>
             <table>
                 <tbody>
                 {customers.map(c => (

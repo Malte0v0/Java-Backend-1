@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class RoomResponseDTO {
     @NotNull
-    private Long roomId;
+    private Long id;
 
     @NotNull
     private RoomType roomType;

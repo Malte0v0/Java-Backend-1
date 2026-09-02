@@ -44,7 +44,7 @@ class BookingServiceTest {
         RoomCreateDTO roomDTO = new RoomCreateDTO();
         roomDTO.setRoomType(RoomType.DOUBLE);
         roomDTO.setExtraBeds(1);
-        roomId = roomService.create(roomDTO).getRoomId();
+        roomId = roomService.create(roomDTO).getId();
     }
 
     private BookingCreateDTO makeDTO(String checkIn, String checkOut, int guests) {

@@ -114,7 +114,7 @@ public class BookingService {
         response.setCustomerEmail(booking.getCustomer().getEmail());
         response.setCustomerFirstName(booking.getCustomer().getFirstName());
         response.setCustomerLastName(booking.getCustomer().getLastName());
-        response.setRoomId(booking.getRoom().getRoomId());
+        response.setRoomId(booking.getRoom().getId());
         response.setRoomType(booking.getRoom().getRoomType().toString());
         response.setExtraBeds(booking.getRoom().getExtraBeds());
         response.setCheckInDate(booking.getCheckInDate());
