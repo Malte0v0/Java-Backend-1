@@ -1,7 +1,5 @@
 package org.example.javabackend1.Booking;
 
-import org.example.javabackend1.Customer.CustomerEntity;
-import org.example.javabackend1.Customer.CustomerRepository;
 import org.example.javabackend1.Exceptions.BookingException;
 import org.example.javabackend1.Room.RoomEntity;
 import org.example.javabackend1.Room.RoomRepository;
@@ -14,20 +12,15 @@ import java.util.List;
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
-    private final CustomerRepository customerRepository;
     private final RoomRepository roomRepository;
 
     public BookingService(BookingRepository bookingRepository,
-                          CustomerRepository customerRepository,
                           RoomRepository roomRepository) {
         this.bookingRepository = bookingRepository;
-        this.customerRepository = customerRepository;
         this.roomRepository = roomRepository;
     }
 
     public void update(Long id, BookingCreateDTO createDTO) {
-        CustomerEntity customer = customerRepository.findById(createDTO.getCustomerId())
-                .orElseThrow(() -> new BookingException("Customer not found"));
         RoomEntity room = roomRepository.findById(createDTO.getRoomId())
                 .orElseThrow(() -> new BookingException("Room not found"));
         BookingEntity booking = bookingRepository.findById(id)
@@ -35,12 +28,11 @@ public class BookingService {
                         () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
                 );
 
-        createBookingResponseDTO(createDTO, booking, customer, room);
+        createBookingResponseDTO(createDTO, booking, room);
     }
     private BookingResponseDTO createBookingResponseDTO(
             BookingCreateDTO createDTO,
             BookingEntity booking,
-            CustomerEntity customerEntity,
             RoomEntity roomEntity
     ) {
         LocalDate checkInDate = LocalDate.parse(createDTO.getCheckInDate());
@@ -59,7 +51,6 @@ public class BookingService {
 
         booking.setCheckInDate(checkInDate);
         booking.setCheckOutDate(checkOutDate);
-        booking.setCustomer(customerEntity);
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(roomEntity);
 
@@ -70,7 +61,7 @@ public class BookingService {
     public void delete(Long id) {
         BookingEntity booking = bookingRepository.findById(id)
                 .orElseThrow(
-                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
+                        () -> new BookingException("Booking with id " + id + " does not exist")
                 );
 
         bookingRepository.delete(booking);
@@ -79,7 +70,7 @@ public class BookingService {
     public BookingResponseDTO findById(Long id) {
         BookingEntity booking = bookingRepository.findById(id)
                 .orElseThrow(
-                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
+                        () -> new BookingException("Booking with id " + id + " does not exist")
                 );
 
         return toResponse(booking);
@@ -97,23 +88,17 @@ public class BookingService {
     }
 
     public BookingResponseDTO create(BookingCreateDTO createDTO) {
-        CustomerEntity customer = customerRepository.findById(createDTO.getCustomerId())
-                .orElseThrow(() -> new BookingException("Customer not found"));
         RoomEntity room = roomRepository.findById(createDTO.getRoomId())
                 .orElseThrow(() -> new BookingException("Room not found"));
 
         BookingEntity booking = new BookingEntity();
 
-        return createBookingResponseDTO(createDTO, booking, customer, room);
+        return createBookingResponseDTO(createDTO, booking, room);
     }
 
     public BookingResponseDTO toResponse(BookingEntity booking) {
         BookingResponseDTO response = new BookingResponseDTO();
         response.setId(booking.getId());
-        response.setCustomerId(booking.getCustomer().getId());
-        response.setCustomerEmail(booking.getCustomer().getEmail());
-        response.setCustomerFirstName(booking.getCustomer().getFirstName());
-        response.setCustomerLastName(booking.getCustomer().getLastName());
         response.setRoomId(booking.getRoom().getId());
         response.setRoomType(booking.getRoom().getRoomType().toString());
         response.setExtraBeds(booking.getRoom().getExtraBeds());

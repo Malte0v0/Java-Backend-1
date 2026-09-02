@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//************** för swagger ''''''''''''
 @RequestMapping("/api/rooms")
 public class RoomController {
 
