@@ -1,5 +1,7 @@
 package org.example.javabackend1.Booking;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,27 +16,28 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<BookingResponseDTO> getAllBookings() {
-        return bookingService.findAll();
+    public ResponseEntity<List<BookingResponseDTO>> getAllBookings() {
+        return ResponseEntity.ok().body(bookingService.findAll());
     }
 
     @GetMapping("/{id}")
-    public BookingResponseDTO getBookingById(@PathVariable Long id) {
-        return bookingService.findById(id);
+    public ResponseEntity<BookingResponseDTO> getBookingById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(bookingService.findById(id));
     }
 
     @PostMapping
-    public BookingResponseDTO createBooking(@RequestBody BookingCreateDTO dto) {
-        return bookingService.create(dto);
+    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody BookingCreateDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public void updateBooking(@PathVariable Long id, @RequestBody BookingCreateDTO dto) {
-        bookingService.update(id, dto);
+    public ResponseEntity<BookingResponseDTO> updateBooking(@PathVariable Long id, @RequestBody BookingCreateDTO dto) {
+        return ResponseEntity.ok().body(bookingService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBooking(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

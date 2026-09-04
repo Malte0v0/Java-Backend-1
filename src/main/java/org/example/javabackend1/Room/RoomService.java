@@ -1,6 +1,8 @@
 package org.example.javabackend1.Room;
 
-import org.example.javabackend1.Exceptions.RoomException;
+import org.example.javabackend1.Exceptions.InvalidRoomDataException;
+import org.example.javabackend1.Exceptions.RoomDatesInvalid;
+import org.example.javabackend1.Exceptions.RoomNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ public class RoomService {
         LocalDate checkOut = LocalDate.parse(checkOutDate);
 
         if (checkOut.isBefore(checkIn) || checkOut.isEqual(checkIn)) {
-            throw new RoomException("Check out must be after check in");
+            throw new RoomDatesInvalid("Check out must be after check in");
         }
 
         List<RoomResponseDTO> responseRooms = new ArrayList<>();
@@ -49,7 +51,7 @@ public class RoomService {
 
     public RoomResponseDTO create(RoomCreateDTO dto) {
         if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
-            throw new RoomException("Single rooms cant have extra beds");
+            throw new InvalidRoomDataException("Single rooms cant have extra beds");
         }
         RoomEntity saved = roomRepository.save(toEntity(dto));
         return toDTO(saved);
@@ -57,11 +59,11 @@ public class RoomService {
 
     public RoomResponseDTO update(Long roomId, RoomCreateDTO dto) {
         if (dto.getRoomType() == RoomType.SINGLE && dto.getExtraBeds() > 0) {
-            throw new RoomException("Single rooms cant have extra beds");
+            throw new InvalidRoomDataException("Single rooms cant have extra beds");
         }
 
         RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RoomException("Room was not found"));
+                .orElseThrow(() -> new RoomNotFoundException("Room was not found"));
         room.setRoomType(dto.getRoomType());
         room.setExtraBeds(dto.getExtraBeds());
 
