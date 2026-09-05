@@ -1,5 +1,6 @@
 package org.example.javabackend1.Booking;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +27,12 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<BookingResponseDTO> createBooking(@RequestBody BookingCreateDTO dto) {
+    public ResponseEntity<BookingResponseDTO> createBooking(@Valid @RequestBody BookingCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookingResponseDTO> updateBooking(@PathVariable Long id, @RequestBody BookingCreateDTO dto) {
+    public ResponseEntity<BookingResponseDTO> updateBooking(@PathVariable Long id, @Valid @RequestBody BookingCreateDTO dto) {
         return ResponseEntity.ok().body(bookingService.update(id, dto));
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 public class RoomService {
-
     private final RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {

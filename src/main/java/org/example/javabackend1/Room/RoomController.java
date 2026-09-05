@@ -1,5 +1,8 @@
 package org.example.javabackend1.Room;
 
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -7,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/rooms")
 public class RoomController {
-
     private final RoomService roomService;
 
     public RoomController(RoomService roomService) {
@@ -15,41 +17,35 @@ public class RoomController {
     }
 
     @GetMapping
-    public List<RoomResponseDTO> getAllRooms() {
-        return roomService.findAll();
+    public ResponseEntity<List<RoomResponseDTO>> getAllRooms() {
+        return ResponseEntity.ok(roomService.findAll());
     }
 
     @GetMapping("/available")
-    public List<RoomResponseDTO> getAvailableRooms(@RequestParam String checkIn,
+    public ResponseEntity<List<RoomResponseDTO>> getAvailableRooms(@RequestParam String checkIn,
                                                    @RequestParam String checkOut,
                                                    @RequestParam(defaultValue = "1") int guests) {
-        return roomService.findAvailableRooms(checkIn, checkOut, guests);
+        return ResponseEntity.ok(roomService.findAvailableRooms(checkIn, checkOut, guests));
     }
 
     @GetMapping("/{id}")
-    public RoomResponseDTO getRoomById(@PathVariable Long id) {
-        return roomService.findById(id);
+    public ResponseEntity<RoomResponseDTO> getRoomById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(roomService.findById(id));
     }
 
     @PostMapping
-    public RoomResponseDTO createRoom(@RequestBody RoomCreateDTO dto) {
-        return roomService.create(dto);
+    public ResponseEntity<RoomResponseDTO> createRoom(@Valid @RequestBody RoomCreateDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public RoomResponseDTO updateRoom(@PathVariable Long id,
-                                      @RequestBody RoomCreateDTO dto) {
-        return roomService.update(id, dto);
+    public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id, @Valid @RequestBody RoomCreateDTO dto) {
+        return ResponseEntity.ok().body(roomService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         roomService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
-// så du kommer åt dem
-// GET    /api/rooms
-//GET    /api/rooms/{id}
-//POST   /api/rooms
-//PUT    /api/rooms/{id}
-//DELETE /api/rooms/{id}
