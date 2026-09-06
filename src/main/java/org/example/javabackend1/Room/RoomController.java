@@ -1,12 +1,14 @@
 package org.example.javabackend1.Room;
 
-import org.example.javabackend1.Exceptions.RoomException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/rooms")
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/rooms")
 public class RoomController {
     private final RoomService roomService;
 
@@ -15,103 +17,35 @@ public class RoomController {
     }
 
     @GetMapping
-    public String mainMenu() {
-        return "rooms/room";
+    public ResponseEntity<List<RoomResponseDTO>> getAllRooms() {
+        return ResponseEntity.ok(roomService.findAll());
     }
 
-    // --- GET /rooms/available ---
     @GetMapping("/available")
-    public String showAvailableRooms(@RequestParam(required = false) String checkIn,
-                                     @RequestParam(required = false) String checkOut,
-                                     @RequestParam(required = false) Integer guests,
-                                     Model model) {
-        if (checkIn != null && checkOut != null) {
-            model.addAttribute("rooms", roomService.findAvailableRooms(checkIn, checkOut, guests));
-            model.addAttribute("checkIn", checkIn);
-            model.addAttribute("checkOut", checkOut);
-            model.addAttribute("guests", guests);
-        }
-        return "rooms/available";
+    public ResponseEntity<List<RoomResponseDTO>> getAvailableRooms(@RequestParam String checkIn,
+                                                   @RequestParam String checkOut,
+                                                   @RequestParam(defaultValue = "1") int guests) {
+        return ResponseEntity.ok(roomService.findAvailableRooms(checkIn, checkOut, guests));
     }
 
-    // --- GET /rooms/list ---
-    @GetMapping("/list")
-    public String listRooms(Model model) {
-        model.addAttribute("rooms", roomService.findAll());
-        return "rooms/list";
-    }
-
-
-
-    //              ------------------------------ NEW ------------------------------
-    // ↓↓↓↓↓ SKAPA EN NY BOOKING ↓↓↓↓↓
-    // --- GET /rooms/new ---
-    @GetMapping("/new")
-    public String showCreateForm(Model model) {
-        model.addAttribute("room", new RoomCreateDTO());
-        model.addAttribute("roomTypes", RoomType.values());
-        return "rooms/new";
-    }
-
-    // --- POST /rooms/new ---
-    @PostMapping("/new")
-    public String createRoom(@ModelAttribute("room") RoomCreateDTO dto, Model model) {
-        try {
-            roomService.create(dto);
-            return "redirect:/rooms/list";
-        } catch (RoomException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("room", dto);
-            model.addAttribute("roomTypes", RoomType.values());
-            return "rooms/new";
-        }
-    }
-    // ↑↑↑↑↑ SKAPA EN NY BOOKING ↑↑↑↑↑
-
-    // --- GET /rooms/{id} ---
     @GetMapping("/{id}")
-    public String getRoom(@PathVariable Long id, Model model) {
-        model.addAttribute("room", roomService.findById(id));
-        return "rooms/details";
+    public ResponseEntity<RoomResponseDTO> getRoomById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(roomService.findById(id));
     }
 
-
-
-    //              ------------------------------ EDIT ------------------------------
-    // ↓↓↓↓↓ REDIGERA ETT ROOM ↓↓↓↓↓
-    // --- GET /rooms/{id}/edit ---
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("room", roomService.findById(id));
-        model.addAttribute("roomTypes",RoomType.values());
-        return "rooms/edit";
+    @PostMapping
+    public ResponseEntity<RoomResponseDTO> createRoom(@Valid @RequestBody RoomCreateDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomService.create(dto));
     }
 
-    // --- POST /rooms/{id}/edit ---
-    @PostMapping("/{id}/edit")
-    public String updateRoom(@PathVariable Long id,
-                             @ModelAttribute("room") RoomCreateDTO dto) {
-        roomService.update(id, dto);
-        return "redirect:/rooms/list";
-    }
-    // ↑↑↑↑↑ REDIGERA ETT ROOM ↑↑↑↑↑
-
-
-
-    //              ------------------------------ DELETE ------------------------------
-    // ↓↓↓↓↓ RADERA ETT ROOM ↓↓↓↓↓
-    // --- GET /rooms/{id}/delete ---
-    @GetMapping("/{id}/delete")
-    public String showDeletePage(@PathVariable Long id, Model model) {
-        model.addAttribute("room", roomService.findById(id));
-        return "rooms/delete";
+    @PutMapping("/{id}")
+    public ResponseEntity<RoomResponseDTO> updateRoom(@PathVariable Long id, @Valid @RequestBody RoomCreateDTO dto) {
+        return ResponseEntity.ok().body(roomService.update(id, dto));
     }
 
-    // --- POST /rooms/{id}/delete ---
-    @PostMapping("/{id}/delete")
-    public String deleteRoom(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         roomService.delete(id);
-        return "redirect:/rooms/list";
+        return ResponseEntity.noContent().build();
     }
-    // ↑↑↑↑↑ RADERA ETT ROOM ↑↑↑↑↑
 }

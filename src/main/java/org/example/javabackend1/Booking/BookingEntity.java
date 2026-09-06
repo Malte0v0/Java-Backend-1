@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.javabackend1.Customer.CustomerEntity;
 import org.example.javabackend1.Room.RoomEntity;
 
 import java.time.LocalDate;
@@ -19,9 +18,7 @@ public class BookingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    private long customerId;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

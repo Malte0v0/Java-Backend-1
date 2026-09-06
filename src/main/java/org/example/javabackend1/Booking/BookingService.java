@@ -1,8 +1,6 @@
 package org.example.javabackend1.Booking;
 
-import org.example.javabackend1.Customer.CustomerEntity;
-import org.example.javabackend1.Customer.CustomerRepository;
-import org.example.javabackend1.Exceptions.BookingException;
+import org.example.javabackend1.Exceptions.*;
 import org.example.javabackend1.Room.RoomEntity;
 import org.example.javabackend1.Room.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -14,40 +12,34 @@ import java.util.List;
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
-    private final CustomerRepository customerRepository;
     private final RoomRepository roomRepository;
 
     public BookingService(BookingRepository bookingRepository,
-                          CustomerRepository customerRepository,
                           RoomRepository roomRepository) {
         this.bookingRepository = bookingRepository;
-        this.customerRepository = customerRepository;
         this.roomRepository = roomRepository;
     }
 
-    public void update(Long id, BookingCreateDTO createDTO) {
-        CustomerEntity customer = customerRepository.findById(createDTO.getCustomerId())
-                .orElseThrow(() -> new BookingException("Customer not found"));
-        RoomEntity room = roomRepository.findById(createDTO.getRoomId())
-                .orElseThrow(() -> new BookingException("Room not found"));
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(
-                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
-                );
-
-        createBookingResponseDTO(createDTO, booking, customer, room);
+    private BookingEntity getBookingById(long id) {
+        return bookingRepository.findById(id)
+            .orElseThrow(() -> new BookingNotFoundException("Booking with id " + id + " does not exist"));
     }
+
+    private RoomEntity getRoomById(long id) {
+        return roomRepository.findById(id)
+            .orElseThrow(() -> new RoomNotFoundException("Room with id " + id + " does not exist"));
+    }
+
     private BookingResponseDTO createBookingResponseDTO(
             BookingCreateDTO createDTO,
             BookingEntity booking,
-            CustomerEntity customerEntity,
             RoomEntity roomEntity
     ) {
         LocalDate checkInDate = LocalDate.parse(createDTO.getCheckInDate());
         LocalDate checkOutDate = LocalDate.parse(createDTO.getCheckOutDate());
 
         if (!checkOutDate.isAfter(checkInDate)) {
-            throw new BookingException("Check out must be after check in");
+            throw new BookingDatesInvalid("Check out must be after check in");
         }
 
         checkIfRoomIsAvailable(
@@ -59,7 +51,6 @@ public class BookingService {
 
         booking.setCheckInDate(checkInDate);
         booking.setCheckOutDate(checkOutDate);
-        booking.setCustomer(customerEntity);
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
         booking.setRoom(roomEntity);
 
@@ -67,20 +58,27 @@ public class BookingService {
         return toResponse(saved);
     }
 
+    public BookingResponseDTO create(BookingCreateDTO createDTO) {
+        RoomEntity room = getRoomById(createDTO.getRoomId());
+
+        return createBookingResponseDTO(createDTO, new BookingEntity(), room);
+    }
+
+    public BookingResponseDTO update(Long id, BookingCreateDTO createDTO) {
+        RoomEntity room = getRoomById(createDTO.getRoomId());
+        BookingEntity booking = getBookingById(id);
+
+        return createBookingResponseDTO(createDTO, booking, room);
+    }
+
     public void delete(Long id) {
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(
-                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
-                );
+        BookingEntity booking = getBookingById(id);
 
         bookingRepository.delete(booking);
     }
 
     public BookingResponseDTO findById(Long id) {
-        BookingEntity booking = bookingRepository.findById(id)
-                .orElseThrow(
-                        () -> new BookingException("Booking with id " + String.valueOf(id) + " does not exist")
-                );
+        BookingEntity booking = getBookingById(id);
 
         return toResponse(booking);
     }
@@ -98,25 +96,10 @@ public class BookingService {
         return responseBookings;
     }
 
-    public BookingResponseDTO create(BookingCreateDTO createDTO) {
-        CustomerEntity customer = customerRepository.findById(createDTO.getCustomerId())
-                .orElseThrow(() -> new BookingException("Customer not found"));
-        RoomEntity room = roomRepository.findById(createDTO.getRoomId())
-                .orElseThrow(() -> new BookingException("Room not found"));
-
-        BookingEntity booking = new BookingEntity();
-
-        return createBookingResponseDTO(createDTO, booking, customer, room);
-    }
-
     public BookingResponseDTO toResponse(BookingEntity booking) {
         BookingResponseDTO response = new BookingResponseDTO();
         response.setId(booking.getId());
-        response.setCustomerId(booking.getCustomer().getId());
-        response.setCustomerEmail(booking.getCustomer().getEmail());
-        response.setCustomerFirstName(booking.getCustomer().getFirstName());
-        response.setCustomerLastName(booking.getCustomer().getLastName());
-        response.setRoomId(booking.getRoom().getRoomId());
+        response.setRoomId(booking.getRoom().getId());
         response.setRoomType(booking.getRoom().getRoomType().toString());
         response.setExtraBeds(booking.getRoom().getExtraBeds());
         response.setCheckInDate(booking.getCheckInDate());
@@ -125,24 +108,22 @@ public class BookingService {
         return response;
     }
 
-
     private void checkIfRoomIsAvailable(
             RoomEntity room,
             LocalDate checkInDate,
             LocalDate checkOutDate,
             Long bookingIdToIgnore
     ) {
-        List<BookingEntity> overlappingBookings =
-                bookingRepository.findByRoomAndCheckInDateLessThanAndCheckOutDateGreaterThan(
-                        room,
-                        checkOutDate,
-                        checkInDate
-                );
+        List<BookingEntity> overlappingBookings = bookingRepository.findByRoomAndCheckInDateLessThanAndCheckOutDateGreaterThan(
+                room,
+                checkOutDate,
+                checkInDate
+        );
 
         for (BookingEntity existingBooking : overlappingBookings) {
             if (bookingIdToIgnore == null ||
                     !existingBooking.getId().equals(bookingIdToIgnore)) {
-                throw new BookingException("Room is already booked for these dates");
+                throw new RoomIsBookedException("A room is already booked for these dates");
             }
         }
     }
