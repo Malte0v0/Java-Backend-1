@@ -41,4 +41,10 @@ public class BookingController {
         bookingService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/customer/{customerId}/active")
+public ResponseEntity<Boolean>hasActiveBooking(
+    @PathVariable Long customerId){
+        boolean hasActiveBooking = bookingService.hasActiveBookings(customerId);
+        return ResponseEntity.ok(hasActiveBooking);
+    }
 }

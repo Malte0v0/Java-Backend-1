@@ -22,12 +22,12 @@ public class BookingService {
 
     private BookingEntity getBookingById(long id) {
         return bookingRepository.findById(id)
-            .orElseThrow(() -> new BookingNotFoundException("Booking with id " + id + " does not exist"));
+                .orElseThrow(() -> new BookingNotFoundException("Booking with id " + id + " does not exist"));
     }
 
     private RoomEntity getRoomById(long id) {
         return roomRepository.findById(id)
-            .orElseThrow(() -> new RoomNotFoundException("Room with id " + id + " does not exist"));
+                .orElseThrow(() -> new RoomNotFoundException("Room with id " + id + " does not exist"));
     }
 
     private BookingResponseDTO createBookingResponseDTO(
@@ -48,7 +48,7 @@ public class BookingService {
                 checkOutDate,
                 booking.getId()
         );
-
+        booking.setCustomerId(createDTO.getCustomerId());
         booking.setCheckInDate(checkInDate);
         booking.setCheckOutDate(checkOutDate);
         booking.setNumberOfGuests(createDTO.getNumberOfGuests());
@@ -88,16 +88,17 @@ public class BookingService {
 
         List<BookingResponseDTO> responseBookings = new ArrayList<>();
         for (BookingEntity booking : bookings) {
-            if(booking != null) {
-            responseBookings.add(toResponse(booking));
-        }
+            if (booking != null) {
+                responseBookings.add(toResponse(booking));
             }
+        }
 
         return responseBookings;
     }
 
     public BookingResponseDTO toResponse(BookingEntity booking) {
         BookingResponseDTO response = new BookingResponseDTO();
+        response.setCustomerId(booking.getCustomerId());
         response.setId(booking.getId());
         response.setRoomId(booking.getRoom().getId());
         response.setRoomType(booking.getRoom().getRoomType().toString());
@@ -126,5 +127,11 @@ public class BookingService {
                 throw new RoomIsBookedException("A room is already booked for these dates");
             }
         }
+    }
+    public boolean hasActiveBookings(Long customerId) {
+        return bookingRepository
+                .existsByCustomerIdAndCheckOutDateGreaterThanEqual(
+                        customerId,
+                        LocalDate.now());
     }
 }
