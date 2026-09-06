@@ -14,24 +14,25 @@ import java.time.LocalDate;
 public class BookingResponseDTO {
     @NotNull
     private Long id;
-    @Email
-    private String customerEmail;
+
     @NotNull
     private Long customerId;
-    @NotNull
-    private String customerFirstName;
-    @NotNull
-    private String customerLastName;
+
     @NotNull
     private Long roomId;
+
     @NotNull
     private String roomType;
+
     @NotNull
     private int extraBeds;
+
     @NotNull
     private LocalDate checkInDate;
+
     @NotNull
     private LocalDate checkOutDate;
+
     @NotNull
     private int numberOfGuests;
 }

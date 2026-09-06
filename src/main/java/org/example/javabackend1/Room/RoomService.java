@@ -1,7 +1,7 @@
 package org.example.javabackend1.Room;
 
 import org.example.javabackend1.Exceptions.InvalidRoomDataException;
-import org.example.javabackend1.Exceptions.RoomDatesInvalid;
+import org.example.javabackend1.Exceptions.RoomDatesInvalidException;
 import org.example.javabackend1.Exceptions.RoomNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class RoomService {
         LocalDate checkOut = LocalDate.parse(checkOutDate);
 
         if (checkOut.isBefore(checkIn) || checkOut.isEqual(checkIn)) {
-            throw new RoomDatesInvalid("Check out must be after check in");
+            throw new RoomDatesInvalidException("Check out must be after check in");
         }
 
         List<RoomResponseDTO> responseRooms = new ArrayList<>();
