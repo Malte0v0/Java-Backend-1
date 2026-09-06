@@ -26,6 +26,11 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingService.findById(id));
     }
 
+    @GetMapping("/customer/{id}/has-active")
+    public ResponseEntity<Boolean> customerHasActiveBooking(@PathVariable Long id) {
+        return ResponseEntity.ok().body(bookingService.customerHasActiveBooking(id));
+    }
+
     @PostMapping
     public ResponseEntity<BookingResponseDTO> createBooking(@Valid @RequestBody BookingCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingService.create(dto));

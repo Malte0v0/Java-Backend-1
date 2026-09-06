@@ -141,4 +141,8 @@ public class BookingService {
             }
         }
     }
+
+    public boolean customerHasActiveBooking(Long id) {
+        return bookingRepository.existsByCustomerIdAndCheckOutDateGreaterThanEqual(id, LocalDate.now());
+    }
 }
