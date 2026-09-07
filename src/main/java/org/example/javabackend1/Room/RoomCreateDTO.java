@@ -14,5 +14,6 @@ public class RoomCreateDTO {
     private RoomType roomType;
 
     @Min(0)
+    @NotNull
     private int extraBeds;
 }
