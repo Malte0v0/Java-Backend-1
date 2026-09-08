@@ -7,10 +7,11 @@ export default function CustomerForm() {
     const navigate = useNavigate();   // lets us redirect after saving
     const isEditing = Boolean(id);    // true if there's an id in the URL
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [phone, setPhone] = useState(null);
+    const [error, setError] = useState("");
 
     // If we're editing, load the existing customer and fill the form
     useEffect(() => {
@@ -33,11 +34,17 @@ export default function CustomerForm() {
 
         const save = isEditing ? updateCustomer(id, data) : createCustomer(data);
 
-        save.then(() => navigate("/customers")); // go back to the list once saved
+        save.then(() => navigate("/customers")).catch(err => setError(err.message));
     }
 
     return (
         <div>
+            {error && (
+                <div className="error-popup">
+                    <span>{error}</span>
+                    <button onClick={() => setError("")}>X</button>
+                </div>
+            )}
             <h1>{isEditing ? "Edit customer" : "New customer"}</h1>
             <form onSubmit={handleSubmit}>
                 <input

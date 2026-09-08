@@ -11,12 +11,12 @@ export default function RoomForm() {
 
     const [roomType, setRoomType] = useState(ROOM_TYPES[0]);
     const [extraBeds, setExtraBeds] = useState(0);
+    const [error, setError] = useState("");
 
-    // If we're editing, load the existing room and fill the form
     useEffect(() => {
         if (isEditing) {
             getRooms().then(rooms => {
-                const room = rooms.find(r => r.roomId === Number(id));
+                const room = rooms.find(r => r.id === Number(id));
                 if (room) {
                     setRoomType(room.roomType);
                     setExtraBeds(room.extraBeds);
@@ -29,11 +29,17 @@ export default function RoomForm() {
         e.preventDefault();
         const data = { roomType, extraBeds: Number(extraBeds) };
         const save = isEditing ? updateRoom(id, data) : createRoom(data);
-        save.then(() => navigate("/rooms"));
+        save.then(() => navigate("/rooms")).catch(err => setError(err.message));
     }
 
     return (
         <div>
+            {error && (
+                <div className="error-popup">
+                    <span>{error}</span>
+                    <button onClick={() => setError("")}>X</button>
+                </div>
+            )}
             <h1>{isEditing ? "Edit room" : "New room"}</h1>
             <form onSubmit={handleSubmit}>
                 <select value={roomType} onChange={e => setRoomType(e.target.value)}>

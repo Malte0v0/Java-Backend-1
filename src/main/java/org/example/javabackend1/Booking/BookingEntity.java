@@ -1,6 +1,7 @@
 package org.example.javabackend1.Booking;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,13 @@ public class BookingEntity {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @NotNull
     private RoomEntity room;
 
+    @NotNull
     private LocalDate checkInDate;
+    @NotNull
     private LocalDate checkOutDate;
+    @NotNull
     private int numberOfGuests;
 }

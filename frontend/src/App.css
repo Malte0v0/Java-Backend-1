@@ -17,6 +17,33 @@
   }
 }
 
+.error-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 15px 20px;
+  background: #dc3545;
+  color: white;
+
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  z-index: 1000;
+}
+
+.error-popup button {
+  border: none;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .hero {
   position: relative;
 
