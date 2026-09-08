@@ -7,6 +7,8 @@ import BookingList from "./pages/BookingList.jsx";
 import BookingForm from "./pages/BookingForm.jsx";
 import RoomForm from "./pages/RoomForm.jsx";
 import RoomList from "./pages/RoomList.jsx";
+import ReviewList from "./pages/ReviewList.jsx";
+import ReviewForm from "./pages/ReviewForm.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +19,7 @@ function App() {
           <Link to="/customers">Customers</Link>
           <Link to="/rooms">Rooms</Link>
           <Link to="/bookings">Bookings</Link>
+          <Link to="/reviews">Reviews</Link>
         </nav>
 
         <Routes>
@@ -31,6 +34,10 @@ function App() {
           <Route path="/bookings" element={<BookingList/>}/>
           <Route path="/bookings/new" element={<BookingForm/>}/>
           <Route path="/bookings/:id/edit" element={<BookingForm/>}/>
+
+          <Route path="/reviews" element={<ReviewList/>}/>
+          <Route path="/reviews/new" element={<ReviewForm/>}/>
+          <Route path="/reviews/:id/edit" element={<ReviewForm/>}/>
         </Routes>
       </BrowserRouter>
   );

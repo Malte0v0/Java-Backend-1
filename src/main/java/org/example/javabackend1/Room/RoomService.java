@@ -43,7 +43,7 @@ public class RoomService {
 
     public RoomResponseDTO findById(Long roomId) {
         RoomEntity room = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Hitta inte rummet"));
+                .orElseThrow(() -> new RoomNotFoundException("Could not find the room with id " + roomId));
 
         return toDTO(room);
     }
@@ -96,6 +96,7 @@ public class RoomService {
         room.setExtraBeds(dto.getExtraBeds());
         return room;
     }
+
     public int getMaxCapacity(RoomResponseDTO room) {
 
         if (room.getRoomType() == RoomType.SINGLE) {

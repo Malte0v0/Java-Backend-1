@@ -16,6 +16,10 @@ export default defineConfig({
       "/api/rooms": {
         target: "http://localhost:8080",
         changeOrigin: true
+      },
+      "/api/reviews": {
+        target: "http://localhost:8082",
+        changeOrigin: true
       }
     }
   }

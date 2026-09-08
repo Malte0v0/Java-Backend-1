@@ -27,6 +27,36 @@ async function request(url, options = {}) {
     return data;
 }
 
+// REVIEWS
+
+export async function getReviews() {
+    return request(`${BASE}/reviews`);
+}
+
+export async function createReview(data) {
+    return request(`${BASE}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+}
+
+export async function updateReview(id, data) {
+    return request(`${BASE}/reviews/edit/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+}
+
+export async function deleteReview(id) {
+    return request(`${BASE}/reviews/${id}`, {
+        method: "DELETE",
+    });
+}
+
+// CUSTOMERS
+
 export async function getCustomers() {
     return request(`${BASE}/customers`);
 }
